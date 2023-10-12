@@ -24,7 +24,7 @@ pipeline {
         targetBranch = branchName
 
           git branch: branchName,
-          url: 'https://github.com/ZayaniHassen/Test5Arctic3Back.git',
+          url: 'https://github.com/ZayaniHassen/Devops.git',
           credentialsId: 'e0fadbbb-3566-416b-990e-5983a37c3013'
       }
 	  echo "Current branch name: ${branchName}"
