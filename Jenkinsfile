@@ -39,7 +39,7 @@ pipeline {
       }
       steps {
         sh 'mvn clean compile'
-        echo 'Build stage done'
+        echo 'Clean stage done'
       }
     }
 
