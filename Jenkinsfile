@@ -31,7 +31,7 @@ pipeline {
 	  echo "Current branch name: ${targetBranch}"
       }
     }
-	  stage('MVN BUILD') {
+	  stage('MVN COMPILE') {
       when {
         expression {
           (params.CHANGE_ID != null) && ((targetBranch == 'Hassen'))
