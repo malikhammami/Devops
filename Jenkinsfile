@@ -53,6 +53,18 @@ stage('MVN BUILD') {
         sh 'mvn clean install'
         echo 'Build stage done'
       }
-    }    
+    }  
+	 stage('SonarQube Analysis') {
+            steps {
+                // Lancer l'analyse SonarQube avec Maven
+                sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar"
+            }
+        }
+        stage('Nexus') {
+            steps {
+                
+                sh "mvn deploy -DskipTests"
+            }
+        }  
   }
 }
