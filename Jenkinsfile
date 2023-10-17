@@ -31,12 +31,7 @@ pipeline {
 	  echo "Current branch name: ${targetBranch}"
       }
     }
-	  stage('Clean') {
-            steps {
-                // Add a shell or batch step to perform the clean operation
-                sh 'mvn clean'
-            }
-        }
+
 	  stage('MVN COMPILE') {
       when {
         expression {
