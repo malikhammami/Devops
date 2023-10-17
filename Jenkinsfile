@@ -34,7 +34,7 @@ pipeline {
 	  stage('MVN COMPILE') {
       when {
         expression {
-          (params.CHANGE_ID != null) && ((targetBranch == 'Hassen'))
+          (params.CHANGE_ID != null) && ((targetBranch == 'Categorie_Produit'))
         }
       }
       steps {
@@ -46,7 +46,7 @@ pipeline {
 stage('MVN BUILD') {
       when {
         expression {
-          (params.CHANGE_ID != null) && ((targetBranch == 'Hassen'))
+          (params.CHANGE_ID != null) && ((targetBranch == 'Categorie_Produit'))
         }
       }
       steps {
