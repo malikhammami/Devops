@@ -81,6 +81,17 @@ stage('MVN BUILD') {
        }
     }
 
+	   stage ('NEXUS DEPLOY') {
+	when {
+         expression {
+          (params.CHANGE_ID != null) && ((targetBranch == 'Categorie_Produit'))
+	}
+	   }
+       steps {
+       sh 'mvn deploy -DskipTests'
+      }
+    }
+
 	  
 	stage('Build Docker') {
     when {
