@@ -32,19 +32,7 @@ pipeline {
       }
     }
 
-	  stage('MVN COMPILE') {
-      when {
-        expression {
-          (params.CHANGE_ID != null) && ((targetBranch == 'Categorie_Produit'))
-        }
-      }
-      steps {
-        sh 'mvn clean compile'
-        echo 'Clean stage done'
-      }
-    }
-
-stage('MVN BUILD') {
+	  stage('MVN BUILD') {
       when {
         expression {
           (params.CHANGE_ID != null) && ((targetBranch == 'Categorie_Produit'))
@@ -52,6 +40,19 @@ stage('MVN BUILD') {
       }
       steps {
         sh 'mvn clean install'
+        echo 'Clean stage done'
+      }
+    }
+
+stage('MVN COMPILE') {
+      when {
+        expression {
+          (params.CHANGE_ID != null) && ((targetBranch == 'Categorie_Produit'))
+        }
+      }
+      steps {
+       
+	sh 'mvn compile'
         echo 'Build stage done'
       }
     }
