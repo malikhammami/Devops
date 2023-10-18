@@ -8,7 +8,7 @@ pipeline {
   agent any
 	environment {
      DOCKERHUB_USERNAME = "hassenzayani"
-     PROD_TAG = "${DOCKERHUB_USERNAME}/Devops-test:v1.0.0-prod"
+     PROD_TAG = "${DOCKERHUB_USERNAME}/devops-test:v1.0.0-prod"
     }
 	parameters {
 	string(name: 'BRANCH_NAME', defaultValue: "${scm.branches[0].name}", description: 'Git branch name')
@@ -122,7 +122,7 @@ stage('MVN BUILD') {
         }
     }
             steps{
-                sh 'docker push $DOCKERHUB_USERNAME/Devops-test --all-tags '
+                sh 'docker push $DOCKERHUB_USERNAME/devops-test --all-tags '
             }
         }
 
