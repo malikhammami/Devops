@@ -40,7 +40,7 @@ pipeline {
       }
       steps {
         sh 'mvn clean install'
-        echo 'Clean stage done'
+        echo 'Build stage done'
       }
     }
 
@@ -53,7 +53,7 @@ stage('MVN COMPILE') {
       steps {
        
 	sh 'mvn compile'
-        echo 'Build stage done'
+        echo 'Compile stage done'
       }
     }
 
