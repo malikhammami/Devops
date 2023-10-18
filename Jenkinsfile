@@ -54,6 +54,22 @@ stage('MVN BUILD') {
         sh 'mvn clean install'
         echo 'Build stage done'
       }
-    }    
+    }
+
+	stage ('JUNIT TEST') {
+	when {
+         expression {
+           (params.CHANGE_ID != null) && ((targetBranch == 'Categorie_Produit'))
+            }
+	   }
+      steps {
+        sh 'mvn test'
+        echo 'test stage done'
+      }
+    }
+
+
+
+	  
   }
 }
