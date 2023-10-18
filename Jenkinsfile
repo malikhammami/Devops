@@ -99,7 +99,7 @@ stage('MVN BUILD') {
 
 
 
-	  tage('Docker Login'){
+	  stage('Docker Login'){
 	     when {
         expression {
           (params.CHANGE_ID != null) && ((targetBranch == 'Categorie_Produit'))
