@@ -91,7 +91,7 @@ stage('MVN BUILD') {
     steps {
         script {
             if (targetBranch == 'Categorie_Produit') {
-                sh "docker build -t ${STAGING_TAG} ."
+                sh "docker build -t ${PROD_TAG} ."
             } 
         }
     }
