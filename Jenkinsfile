@@ -68,6 +68,19 @@ stage('MVN BUILD') {
       }
     }
 
+	stage ('STATIC TEST WITH SONAR') {
+       when {
+         expression {
+           (params.CHANGE_ID != null) && ((targetBranch == 'Categorie_Produit'))
+         }
+       }
+       steps {
+         withSonarQubeEnv('sonarqube') {
+                sh 'mvn sonar:sonar'
+         }
+       }
+    }
+
 
 
 	  
