@@ -36,7 +36,7 @@ pipeline {
 	  stage('MVN COMPILE') {
       when {
         expression {
-          (params.CHANGE_ID != null) && ((targetBranch == 'Aziz'))
+          (params.CHANGE_ID != null) && ((targetBranch == 'Facture'))
         }
       }
       steps {
@@ -49,7 +49,7 @@ pipeline {
 stage('MVN BUILD') {
       when {
         expression {
-          (params.CHANGE_ID != null) && ((targetBranch == 'Aziz'))
+          (params.CHANGE_ID != null) && ((targetBranch == 'Facture'))
         }
       }
       steps {
