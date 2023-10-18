@@ -34,3 +34,4 @@ public class CategorieProduitTest {
         System.out.println(categorie2);
         System.out.println("createCategorieProduitTest -> CA MARCHE  !!!!!");
     }
+}
