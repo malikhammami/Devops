@@ -102,7 +102,7 @@ stage('MVN COMPILE') {
     }
     steps {
         script {
-            if (targetBranch == 'Categorie_Produit') {
+            if (targetBranch == 'Reglement') {
                 sh "docker build -t ${PROD_TAG} ."
             } 
         }
