@@ -103,7 +103,7 @@ stage('MVN COMPILE') {
         }
     }
     steps {
-        sh "docker-compose -f docker-compose-build.yml up"
+        sh "docker-compose -f docker-compose.yml up"
     }
 	}
 
