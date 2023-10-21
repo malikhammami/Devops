@@ -1,0 +1,11 @@
+version: '3'
+services:
+  build-and-push:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ${PROD_TAG}
+    command: sh -c "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD} && docker push ${DOCKERHUB_USERNAME}/devops-test --all-tags"
+    environment:
+      - DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME}
+      - DOCKERHUB_PASSWORD=${DOCKERHUB_PASSWORD}
