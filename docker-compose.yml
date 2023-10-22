@@ -20,10 +20,9 @@ services:
       dockerfile: Dockerfile
     container_name: devops-test
     ports:
-      - "8085:8085"
+      - "8089:8089" # Use the same port as specified in your application.properties
     depends_on:
       - mysql
-    image: devops-test:v1.0.0-prod
     restart: on-failure
     volumes:
       - .m2:/root/.m2
@@ -32,4 +31,4 @@ services:
 
 volumes:
   mysql_data:
-  .m2: # Add a source directory on your host machine here
+  .m2:
