@@ -1,11 +1,36 @@
 version: '3'
+
 services:
-  build-and-push:
+  # MySQL database container
+  mysql:
+    image: mysql:5.7
+    container_name: my-mysql-container
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=1
+      - MYSQL_DATABASE=achatdb
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  # Application container built from Dockerfile
+  app:
     build:
       context: .
       dockerfile: Dockerfile
-    image: ${PROD_TAG}
-    command: sh -c "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD} && docker push ${DOCKERHUB_USERNAME}/devops-test --all-tags"
-    environment:
-      - DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME}
-      - DOCKERHUB_PASSWORD=${DOCKERHUB_PASSWORD}
+    container_name: devops-test
+    ports:
+      - "80:80"
+    depends_on:
+      - mysql
+    image: devops-test:v1.0.0-prod
+    restart: on-failure
+    ports:
+      - 8085:8085
+    volumes:
+      - .m2:/root/.m2
+    stdin_open: true
+    tty: true
+    
+volumes:
+  mysql_data:
