@@ -8,37 +8,37 @@ import tn.esprit.rh.achat.repositories.OperateurRepository;
 import java.util.List;
 
 @Service
-<span class="nc" id="L11">public class OperateurServiceImpl implements IOperateurService {</span>
+<span class="fc" id="L11">public class OperateurServiceImpl implements IOperateurService {</span>
 
 	@Autowired
 	OperateurRepository operateurRepository;
 	@Override
 	public List&lt;Operateur&gt; retrieveAllOperateurs() {
-<span class="nc" id="L17">		return (List&lt;Operateur&gt;) operateurRepository.findAll();</span>
+<span class="fc" id="L17">		return (List&lt;Operateur&gt;) operateurRepository.findAll();</span>
 	}
 
 	@Override
 	public Operateur addOperateur(Operateur o) {
-<span class="nc" id="L22">		operateurRepository.save(o);</span>
-<span class="nc" id="L23">		return o;</span>
+<span class="fc" id="L22">		operateurRepository.save(o);</span>
+<span class="fc" id="L23">		return o;</span>
 	}
 
 	@Override
 	public void deleteOperateur(Long id) {
-<span class="nc" id="L28">		operateurRepository.deleteById(id);</span>
+<span class="fc" id="L28">		operateurRepository.deleteById(id);</span>
 		
-<span class="nc" id="L30">	}</span>
+<span class="fc" id="L30">	}</span>
 
 	@Override
 	public Operateur updateOperateur(Operateur o) {
-<span class="nc" id="L34">		operateurRepository.save(o);</span>
-<span class="nc" id="L35">		return o;</span>
+<span class="fc" id="L34">		operateurRepository.save(o);</span>
+<span class="fc" id="L35">		return o;</span>
 	}
 
 	@Override
 	public Operateur retrieveOperateur(Long id) {
-<span class="nc" id="L40">		Operateur operateur = operateurRepository.findById(id).orElse(null);</span>
-<span class="nc" id="L41">		return operateur;</span>
+<span class="fc" id="L40">		Operateur operateur = operateurRepository.findById(id).orElse(null);</span>
+<span class="fc" id="L41">		return operateur;</span>
 	}
 
 }

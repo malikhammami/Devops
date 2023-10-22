@@ -18,22 +18,22 @@ import lombok.Setter;
 
 @Entity
 @Getter
-<span class="nc" id="L21">@Setter</span>
-<span class="nc" id="L22">@AllArgsConstructor</span>
-<span class="nc" id="L23">@NoArgsConstructor</span>
+<span class="pc" id="L21">@Setter</span>
+<span class="fc" id="L22">@AllArgsConstructor</span>
+<span class="fc" id="L23">@NoArgsConstructor</span>
 public class Operateur implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-<span class="nc" id="L29">	private Long idOperateur;</span>
-<span class="nc" id="L30">	private String nom;</span>
+<span class="fc" id="L29">	private Long idOperateur;</span>
+<span class="fc" id="L30">	private String nom;</span>
 <span class="nc" id="L31">	private String prenom;</span>
 	
 <span class="nc" id="L33">	private String password;</span>
 	@OneToMany
 	@JsonIgnore
 <span class="nc" id="L36">	private Set&lt;Facture&gt; factures;</span>
-	
+	// Getter and setter for the 'factures' field
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
