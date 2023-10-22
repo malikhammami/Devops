@@ -20,13 +20,11 @@ services:
       dockerfile: Dockerfile
     container_name: devops-test
     ports:
-      - "80:80"
+      - "8085:8085"
     depends_on:
       - mysql
     image: devops-test:v1.0.0-prod
     restart: on-failure
-    ports:
-      - 8085:8085
     volumes:
       - .m2:/root/.m2
     stdin_open: true
