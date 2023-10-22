@@ -29,7 +29,7 @@ services:
       - .m2:/root/.m2
     stdin_open: true
     tty: true
-    
+
 volumes:
   mysql_data:
-  .m2:
+  .m2: # Add a source directory on your host machine here
