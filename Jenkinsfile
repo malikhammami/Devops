@@ -35,17 +35,18 @@ pipeline {
         sh "mvn compile"
       }
     }
+    stage('Mockito') {
+      steps {
+        sh 'mvn test'
+      }
+    }
     stage('SonarQube') {
       steps {
         // Lancer l'analyse SonarQube avec Maven
         sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar"
       }
     }
-    stage('Mockito') {
-      steps {
-        sh 'mvn test'
-      }
-    }
+    
     stage('Nexus') {
       steps {
         sh 'mvn deploy -DskipTests'
