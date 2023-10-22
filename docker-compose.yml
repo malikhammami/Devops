@@ -15,7 +15,7 @@ services:
   app:
     depends_on:
       - mysqldb
-    image: hassenzayani/devops-test
+    image: hassenzayani/devops-test:v1.0.0-prod
     restart: on-failure
     ports:
       - 8085:8085
