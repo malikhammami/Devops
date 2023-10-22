@@ -34,5 +34,5 @@ public class Operateur implements Serializable{
 	@OneToMany
 	@JsonIgnore
 	private Set<Facture> factures;
-	
+	// Getter and setter for the 'factures' field
 }
