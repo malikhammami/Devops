@@ -17,7 +17,7 @@ pipeline {
           branchName = params.BRANCH_NAME
           targetBranch = branchName
 
-          git fobranch: branchName,
+          git branch: branchName,
             url: 'https://github.com/ZayaniHassen/Devops.git',
             credentialsId: 'git-credential-hassen'
         }
