@@ -15,7 +15,7 @@ services:
   app:
     depends_on:
       - mysqldb
-    image: ZayaniHassen/achat-1.0-s7
+    image: hassenzayani/achat-1.0-s7
     restart: on-failure
     ports:
       - 8085:8085
