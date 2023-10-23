@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   mysqldb:
@@ -12,18 +12,17 @@ services:
       - 3306:3306
     volumes:
       - db:/var/lib/mysql
-
-  my_container:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: devops-test:prod
+  app:
     depends_on:
       - mysqldb
+    build: ./
+    restart: on-failure
     ports:
-      - "8085:8085"
+      - 8085:8085
     volumes:
       - .m2:/root/.m2
+    stdin_open: true
+    tty: true
 
 volumes:
   db:
