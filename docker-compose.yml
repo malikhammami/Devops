@@ -2,7 +2,7 @@ version: "3"
 
 services:
   mysqldb:
-    image: mysql
+    image: mysql:5.7
     container_name: mysqldb
     restart: unless-stopped
     environment:
@@ -12,18 +12,18 @@ services:
       - 3306:3306
     volumes:
       - db:/var/lib/mysql
-  app:
-  depends_on:
-    - mysqldb
-  build: ./
-  restart: on-failure
-  ports:
-    - 8085:8085
-  volumes:
-    - .m2:/root/.m2
-  stdin_open: true
-  tty: true
 
+  app:
+    depends_on:
+      - mysqldb
+    build: ./
+    restart: on-failure
+    ports:
+      - 8085:8085
+    volumes:
+      - .m2:/root/.m2
+    stdin_open: true
+    tty: true
 
 volumes:
   db:
