@@ -1,29 +1,13 @@
-version: '3'
-
-services:
-  mysqldb:
-    image: mysql
-    container_name: mysqldb
-    restart: unless-stopped
-    environment:
-      - MYSQL_ALLOW_EMPTY_PASSWORD=1
-      - MYSQL_DATABASE=achatdb
-    ports:
-      - 3306:3306
-    volumes:
-      - db:/var/lib/mysql
-
-  my_container:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: devops-test:prod
-    depends_on:
-      - mysqldb
-    ports:
-      - "8085:8085"
-    volumes:
-      - .m2:/root/.m2
-
-volumes:
-  db:
+my_container:
+  depends_on:
+    - mysqldb
+  build:
+    context: .
+    dockerfile: Dockerfile
+  image: devops-test:prod
+  ports:
+    - "8085:8085"
+  volumes:
+    - .m2:/root/.m2
+  stdin_open: true
+  tty: true
