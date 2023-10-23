@@ -8,7 +8,7 @@ pipeline {
   agent any
 	environment {
      DOCKERHUB_USERNAME = "hassenzayani"
-     PROD_TAG = "${DOCKERHUB_USERNAME}/devops-test:v1.0.0-prod"
+     PROD_TAG = "${DOCKERHUB_USERNAME}/achat:v1.0-prod"
     }
 	parameters {
 	string(name: 'BRANCH_NAME', defaultValue: "${scm.branches[0].name}", description: 'Git branch name')
@@ -135,7 +135,7 @@ stage('MVN COMPILE') {
         }
     }
             steps{
-                sh 'docker push $DOCKERHUB_USERNAME/devops-test --all-tags '
+                sh 'docker push $DOCKERHUB_USERNAME/achat-1.0 --all-tags '
             }
         }
 
@@ -160,13 +160,13 @@ stage('MVN COMPILE') {
 //     }
 //     steps {
 //         sh '''
-//         container_ids=$(docker ps -q --filter "publish=8085/tcp")
+//         container_ids=$(docker ps -q --filter "publish=8089/tcp")
 //         if [ -n "$container_ids" ]; then
 //             echo "Stopping and removing containers..."
 //             docker stop $container_ids
 //             docker rm $container_ids
 //         else
-//             echo "No containers found using port 8085."
+//             echo "No containers found using port 8089."
 //         fi
 //         '''
 //     }
