@@ -12,14 +12,13 @@ services:
       - 3306:3306
     volumes:
       - db:/var/lib/mysql
-
   app:
     depends_on:
       - mysqldb
-    build: ./
+    image: hassenzayani/achat-1.0
     restart: on-failure
     ports:
-      - 8085:8085
+      - 8089:8089
     volumes:
       - .m2:/root/.m2
     stdin_open: true
