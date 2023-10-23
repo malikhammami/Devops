@@ -94,34 +94,21 @@ stage('MVN COMPILE') {
     }
 
 
-
-
-	  stage('DOCKER COMPOSE') {
+	  
+	stage('Build Docker') {
     when {
         expression {
-            (params.CHANGE_ID != null) && (targetBranch == 'Categorie_Produit')
+          (params.CHANGE_ID != null) && ((targetBranch == 'Categorie_Produit'))
         }
     }
     steps {
-        sh "docker-compose -f docker-compose.yml up"
+        script {
+            if (targetBranch == 'Categorie_Produit') {
+                sh "docker build -t ${PROD_TAG} ."
+            } 
+        }
     }
-	}
-
-	  
-// 	stage('Build Docker') {
-//     when {
-//         expression {
-//           (params.CHANGE_ID != null) && ((targetBranch == 'Categorie_Produit'))
-//         }
-//     }
-//     steps {
-//         script {
-//             if (targetBranch == 'Categorie_Produit') {
-//                 sh "docker build -t ${PROD_TAG} ."
-//             } 
-//         }
-//     }
-// }
+}
 
 
 
@@ -153,25 +140,37 @@ stage('MVN COMPILE') {
         }
 
 
-	  stage('Remove Containers') {
-		when {
+	  	  stage('DOCKER COMPOSE') {
+    when {
         expression {
-          (params.CHANGE_ID != null) && ((targetBranch == 'Categorie_Produit'))
+            (params.CHANGE_ID != null) && (targetBranch == 'Categorie_Produit')
         }
     }
     steps {
-        sh '''
-        container_ids=$(docker ps -q --filter "publish=8085/tcp")
-        if [ -n "$container_ids" ]; then
-            echo "Stopping and removing containers..."
-            docker stop $container_ids
-            docker rm $container_ids
-        else
-            echo "No containers found using port 8085."
-        fi
-        '''
+        sh "docker-compose -f docker-compose.yml up"
     }
-}
+	}
+
+
+// 	  stage('Remove Containers') {
+// 		when {
+//         expression {
+//           (params.CHANGE_ID != null) && ((targetBranch == 'Categorie_Produit'))
+//         }
+//     }
+//     steps {
+//         sh '''
+//         container_ids=$(docker ps -q --filter "publish=8085/tcp")
+//         if [ -n "$container_ids" ]; then
+//             echo "Stopping and removing containers..."
+//             docker stop $container_ids
+//             docker rm $container_ids
+//         else
+//             echo "No containers found using port 8085."
+//         fi
+//         '''
+//     }
+// }
 
 
 
