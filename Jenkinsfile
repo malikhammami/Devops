@@ -139,38 +139,53 @@ stage('MVN COMPILE') {
             }
         }
 
-
-	  	  stage('DOCKER COMPOSE') {
-    when {
+	  
+	  stage('Remove Containers') {
+		when {
         expression {
-            (params.CHANGE_ID != null) && (targetBranch == 'Categorie_Produit')
+          (params.CHANGE_ID != null) && ((targetBranch == 'Categorie_Produit'))
         }
     }
     steps {
-        sh "docker-compose -f docker-compose.yml up"
+        sh '''
+        container_ids=$(docker ps -q --filter "publish=8089/tcp")
+        if [ -n "$container_ids" ]; then
+            echo "Stopping and removing containers..."
+            docker stop $container_ids
+            docker rm $container_ids
+        else
+            echo "No containers found using port 8089."
+        fi
+        '''
     }
+}
+
+
+
+
+	          stage('Deploy to Prod') {
+            when {
+                expression {
+			(params.CHANGE_ID != null)  && (targetBranch == 'main')
+		}
+            }
+           steps {
+		sh "sudo ansible-playbook ansible/k8s.yml -i ansible/inventory/host.yml"
+	   }
 	}
 
 
-// 	  stage('Remove Containers') {
-// 		when {
-//         expression {
-//           (params.CHANGE_ID != null) && ((targetBranch == 'Categorie_Produit'))
-//         }
-//     }
-//     steps {
-//         sh '''
-//         container_ids=$(docker ps -q --filter "publish=8089/tcp")
-//         if [ -n "$container_ids" ]; then
-//             echo "Stopping and removing containers..."
-//             docker stop $container_ids
-//             docker rm $container_ids
-//         else
-//             echo "No containers found using port 8089."
-//         fi
-//         '''
-//     }
-// }
+	//   	  stage('DOCKER COMPOSE') {
+ //    when {
+ //        expression {
+ //            (params.CHANGE_ID != null) && (targetBranch == 'Categorie_Produit')
+ //        }
+ //    }
+ //    steps {
+ //        sh "docker-compose -f docker-compose.yml up"
+ //    }
+	// }
+
 
 
 
