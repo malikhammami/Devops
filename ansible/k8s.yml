@@ -8,43 +8,43 @@
       k8s:
         api_version: apps/v1
         kind: Deployment
-        name: administration-deployment
+        name: achat-deployment
         namespace: my-namespace
         definition:
           metadata:
             labels:
-              app: my-app-administration
+              app: my-app-achat
           spec:
             replicas: 1
             selector:
               matchLabels:
-                app: my-app-administration
+                app: my-app-achat
             template:
               metadata:
                 labels:
-                  app: my-app-administration
+                  app: my-app-achat
               spec:
                 containers:
-                  - name: administration-manajero
-                    image: mariemmnijli/manajero-administration-app:v1.1.2-prod
+                  - name: achat-container
+                    image: hassenzayani/achat:v1.0-prod
                     ports:
-                      - containerPort: 8092
+                      - containerPort: 8089
     - name: Create service
       k8s:
         api_version: v1
         kind: Service
-        name: administration-service
+        name: achat-service
         namespace: my-namespace
         definition:
           metadata:
             labels:
-              app: my-app-administration
+              app: my-app-achat
           spec:
             selector:
-              app: my-app-administration
+              app: my-app-achat
             ports:
               - protocol: TCP
-                port: 8992
-                targetPort: 8092
+                port: 8989
+                targetPort: 8089
                 nodePort: 32632
             type: NodePort
