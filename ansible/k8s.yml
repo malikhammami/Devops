@@ -1,0 +1,50 @@
+---
+- name: Deploy application on Kubernetes
+  hosts: all
+  gather_facts: false
+  become: yes
+  tasks:
+    - name: Create deployment
+      k8s:
+        api_version: apps/v1
+        kind: Deployment
+        name: administration-deployment
+        namespace: my-namespace
+        definition:
+          metadata:
+            labels:
+              app: my-app-administration
+          spec:
+            replicas: 1
+            selector:
+              matchLabels:
+                app: my-app-administration
+            template:
+              metadata:
+                labels:
+                  app: my-app-administration
+              spec:
+                containers:
+                  - name: administration-manajero
+                    image: mariemmnijli/manajero-administration-app:v1.1.2-prod
+                    ports:
+                      - containerPort: 8092
+    - name: Create service
+      k8s:
+        api_version: v1
+        kind: Service
+        name: administration-service
+        namespace: my-namespace
+        definition:
+          metadata:
+            labels:
+              app: my-app-administration
+          spec:
+            selector:
+              app: my-app-administration
+            ports:
+              - protocol: TCP
+                port: 8992
+                targetPort: 8092
+                nodePort: 32632
+            type: NodePort
