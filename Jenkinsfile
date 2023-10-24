@@ -25,7 +25,7 @@ pipeline {
 
           git branch: branchName,
           url: 'https://github.com/ZayaniHassen/Devops.git',
-          credentialsId: '4920dffc-bd22-4fe7-89af-ac983796a5ab'
+          credentialsId: 'bae8cb4a-a288-4bb5-82b3-2694dbe82925'
       }
 	  echo "Current branch name: ${branchName}"
 	  echo "Current branch name: ${targetBranch}"
@@ -119,7 +119,7 @@ stage('MVN COMPILE') {
         }
     }
             steps{
-                withCredentials([usernamePassword(credentialsId: 'e3bbae12-0224-4ade-800e-25851dbf474e', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'aa8f5af1-7bf6-4420-9186-959984740785', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
                 sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}"
     }
   }
