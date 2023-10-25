@@ -1,19 +1,16 @@
 ---
 - name: Deploy application on Kubernetes
-  hosts: all
+  hosts: localhost  # We use localhost because we're interacting with the local Minikube cluster
   gather_facts: false
-  become: yes
   tasks:
     - name: Create deployment
       k8s:
-        api_version: apps/v1
-        kind: Deployment
-        name: achat-deployment
-        namespace: my-namespace
         definition:
+          apiVersion: apps/v1
+          kind: Deployment
           metadata:
-            labels:
-              app: my-app-achat
+            name: achat-deployment
+            namespace: my-namespace
           spec:
             replicas: 1
             selector:
@@ -31,14 +28,12 @@
                       - containerPort: 8089
     - name: Create service
       k8s:
-        api_version: v1
-        kind: Service
-        name: achat-service
-        namespace: my-namespace
         definition:
+          apiVersion: v1
+          kind: Service
           metadata:
-            labels:
-              app: my-app-achat
+            name: achat-service
+            namespace: my-namespace
           spec:
             selector:
               app: my-app-achat
