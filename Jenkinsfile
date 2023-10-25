@@ -135,7 +135,7 @@ stage('MVN COMPILE') {
         }
     }
             steps{
-                sh 'docker push $DOCKERHUB_USERNAME/achat-1.0 --all-tags '
+                sh 'docker push $DOCKERHUB_USERNAME/achat --all-tags '
             }
         }
 
