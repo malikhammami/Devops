@@ -1,5 +1,5 @@
 # Stage 1: Build the application 
-FROM openjdk AS build
+FROM openjdk:11 AS build
 EXPOSE 8089
 ADD target/achat-1.0.jar achat-1.0.jar
 CMD ["sh", "-c", "-jar", "/achat-1.0.jar"]
