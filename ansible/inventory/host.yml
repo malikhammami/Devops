@@ -1,4 +1,7 @@
-[local]
+[minikube]
 localhost ansible_connection=local
-[all:vars]
+
+[minikube:vars]
 ansible_python_interpreter=/usr/bin/python3
+kubectl_command=kubectl
+kubeconfig_path=~/.kube/config
