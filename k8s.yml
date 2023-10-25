@@ -1,34 +1,50 @@
-apiVersion: apps/v1
-kind: Deployment # Kubernetes resource kind we are creating
-metadata:
-  name: spring-boot-k8s
-spec:
-  selector:
-    matchLabels:
-      app: spring-boot-k8s
-  replicas: 2 # Number of replicas that will be created for this deployment
-  template:
-    metadata:
-      labels:
-        app: spring-boot-k8s
-    spec:
-      containers:
-        - name: achat-app
-          image: hassenzayani/achat:1.0 
-# Image that will be used to containers in the cluster
-          imagePullPolicy: IfNotPresent
-          ports:
-            - containerPort: 8089 
-# The port that the container is running on in the cluster
-apiVersion: v1 # Kubernetes API version
-kind: Service # Kubernetes resource kind we are creating
-metadata: # Metadata of the resource kind we are creating
-  name: springboot-k8s-svc
-spec:
-  selector:
-    app: spring-boot-k8s
-  ports:
-    - protocol: "TCP"
-      port: 8085 # The port that the service is running on in the cluster
-      targetPort: 8085 # The port exposed by the service
-  type: NodePort # type of the service.
+---
+- name: Deploy application on Kubernetes
+  hosts: all
+  gather_facts: false
+  become: yes
+  tasks:
+    - name: Create deployment
+      k8s:
+        api_version: apps/v1
+        kind: Deployment
+        name: achat-deployment
+        namespace: my-namespace
+        definition:
+          metadata:
+            labels:
+              app: my-app-achat
+          spec:
+            replicas: 1
+            selector:
+              matchLabels:
+                app: my-app-achat
+            template:
+              metadata:
+                labels:
+                  app: my-app-achat
+              spec:
+                containers:
+                  - name: achat-app
+                    image: hassenzayani/achat:1.0-prod
+                    ports:
+                      - containerPort: 8092
+    - name: Create service
+      k8s:
+        api_version: v1
+        kind: Service
+        name: achat-service
+        namespace: my-namespace
+        definition:
+          metadata:
+            labels:
+              app: my-app-achat
+          spec:
+            selector:
+              app: my-app-achat
+            ports:
+              - protocol: TCP
+                port: 8992
+                targetPort: 8092
+                nodePort: 32632
+            type: NodePort
