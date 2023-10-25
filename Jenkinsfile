@@ -170,7 +170,7 @@ stage('MVN COMPILE') {
 		}
             }
            steps {
-		kubernetesDeploy(configs: "k8s.yml",kubeconfigID: "kubernetes")
+		kubernetesDeploy (configs: 'k8s.yml',kubeconfigId: 'k8sconfigpwd')
 	   }
 	}
 
