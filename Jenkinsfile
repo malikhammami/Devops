@@ -128,16 +128,16 @@ stage('MVN COMPILE') {
 
 
 
-	stage('Docker Push'){
-		when {
-        expression {
-          (params.CHANGE_ID != null) && ((targetBranch == 'Categorie_Produit'))
-        }
-    }
-            steps{
-                sh 'docker push $DOCKERHUB_USERNAME/achat --all-tags '
-            }
-        }
+	// stage('Docker Push'){
+	// 	when {
+ //        expression {
+ //          (params.CHANGE_ID != null) && ((targetBranch == 'Categorie_Produit'))
+ //        }
+ //    }
+ //            steps{
+ //                sh 'docker push $DOCKERHUB_USERNAME/achat --all-tags '
+ //            }
+ //        }
 
 	  
 	  stage('Remove Containers') {
@@ -170,7 +170,7 @@ stage('MVN COMPILE') {
 		}
             }
            steps {
-		sh "sudo ansible-playbook ansible/k8s.yml -i ansible/inventory/host.yml"
+		sh "sudo ansible-playbook ansible/k8s.yml -i ansible/inventory/host.yml --ask-become-pass"
 	   }
 	}
 
