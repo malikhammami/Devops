@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: spring-boot-k8s
-          image: hassenzayani/achat # Image that will be used to containers in the cluster
+          image: achat:v1.0-prod # Image that will be used to containers in the cluster
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8089 # The port that the container is running on in the cluster
