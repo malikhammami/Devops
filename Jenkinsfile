@@ -166,7 +166,7 @@ stage('MVN COMPILE') {
 	          stage('Deploy to Prod') {
             when {
                 expression {
-			(params.CHANGE_ID != null)  && (targetBranch == 'main')
+			(params.CHANGE_ID != null)  && (targetBranch == 'Categorie_Produit')
 		}
             }
            steps {
