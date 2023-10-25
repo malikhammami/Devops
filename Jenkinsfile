@@ -170,7 +170,7 @@ stage('MVN COMPILE') {
 		}
             }
            steps {
-		sh "sudo ansible-playbook ansible/k8s.yml -i ansible/inventory/host.yml --ask-become-pass"
+		sh "sudo ansible-playbook ansible/k8s.yml -i ansible/inventory/host.yml"
 	   }
 	}
 
