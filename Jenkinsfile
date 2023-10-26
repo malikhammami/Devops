@@ -128,16 +128,16 @@ stage('MVN COMPILE') {
 
 
 
-	// stage('Docker Push'){
-	// 	when {
- //        expression {
- //          (params.CHANGE_ID != null) && ((targetBranch == 'Categorie_Produit'))
- //        }
- //    }
- //            steps{
- //                sh 'docker push $DOCKERHUB_USERNAME/achat --all-tags '
- //            }
- //        }
+	stage('Docker Push'){
+		when {
+        expression {
+          (params.CHANGE_ID != null) && ((targetBranch == 'Categorie_Produit'))
+        }
+    }
+            steps{
+                sh 'docker push $DOCKERHUB_USERNAME/achat --all-tags '
+            }
+        }
 
 	  
 	  stage('Remove Containers') {
