@@ -8,7 +8,7 @@ EXPOSE 8089
 WORKDIR /app
 
 # Copy the JAR file into the container
-COPY target/achat-1.0.jar achat-1.0.jar
+COPY tn/esprit/rh/achat/1.0/achat-1.0.jar achat-1.0.jar
 
 # Set the command to run your Spring Boot application
 CMD ["java", "-jar", "achat-1.0.jar"]
