@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:experimental
+
 FROM maven:3.8.3-jdk-11 AS builder
 
 # Configuration de l'environnement de construction
