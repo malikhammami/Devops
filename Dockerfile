@@ -1,14 +1,11 @@
-# Use a specific version of OpenJDK as the base image
-FROM openjdk:11-jre-slim
+# syntax=docker/dockerfile:experimental
+FROM maven:3.8.3-jdk-11 AS builder
 
-# Expose the port your Spring Boot application uses
-EXPOSE 8089
-
-# Create a directory for your application
+# Configuration de l'environnement de construction
 WORKDIR /app
+COPY pom.xml .
+RUN --mount=type=cache,target=/root/.m2 mvn dependency:go-offline
 
-# Copy the JAR file into the container
-COPY tn/esprit/rh/achat/1.0/achat-1.0.jar achat-1.0.jar
-
-# Set the command to run your Spring Boot application
-CMD ["java", "-jar", "achat-1.0.jar"]
+# Copie du code source et compilation de l'application
+COPY src/ src/
+RUN --mount=type=cache,target=/root/.m2 mvn package
