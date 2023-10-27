@@ -7,7 +7,7 @@ def targetBranch
 pipeline {
   agent any
 	environment {
-     DOCKERHUB_USERNAME = "hassenzayani"
+     DOCKERHUB_USERNAME = "malikhammami99"
      PROD_TAG = "${DOCKERHUB_USERNAME}/test:v1.0.0-prod"
     }
 	parameters {
