@@ -11,7 +11,7 @@ services:
     environment:
        MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
   achat-backend:
-      image: malikhammami99/cc:achat1-0
+      image: malikhammami99/cc
       restart: unless-stopped
       ports:
         - 8089:8089
