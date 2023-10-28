@@ -75,10 +75,10 @@ pipeline {
 
         stage('Docker build and push image') {
             steps {
-                sh "docker build -t achat:1-0 ."
-                sh "docker tag achat:1-0  malikhammami99/cc:achat1-0"
+                sh "sudo docker build -t achat:1-0 ."
+                sh "sudo docker tag achat:1-0  malikhammami99/cc:achat1-0"
                 withDockerRegistry([credentialsId: registryCredential, url: 'https://index.docker.io/v1/']) {
-                    sh 'docker push malikhammami99/cc:achat1-0'
+                    sh 'sudo docker push malikhammami99/cc:achat1-0'
                 }
             }
         }
@@ -87,7 +87,7 @@ pipeline {
                 script {
                     def dockerComposeFile = 'docker-compose.yml'
                     // Run the Docker Compose commands
-                    sh "docker-compose -f ${dockerComposeFile} up -d"
+                    sh "sudo docker-compose -f ${dockerComposeFile} up -d"
                 }
             }
         }
