@@ -10,6 +10,9 @@ services:
       - 3306:3306
     volumes:
       - db:/var/lib/mysql
+    networks:
+      - backendNetwork
+      
   springboot:
     image: amaniboussaa/springachat
     ports:
@@ -23,6 +26,9 @@ services:
       test: ["CMD", "curl", "-f", "http://mysqldb:3306"]
       interval: 10s
       retries: 5
+    networks:
+      - backendNetwork
+      - frontendNetwork
 
   angular:
     image: amaniboussaa/angularachat
@@ -30,6 +36,12 @@ services:
       - 4200:80
     depends_on:
       - springboot
+    networks:
+      - frontendNetwork
 
 volumes:
   db:
+
+networks:
+  backendNetwork:
+  frontendNetwork:
