@@ -77,7 +77,9 @@ pipeline {
             steps {
                 sh "docker build -t achat:1-0 ."
                 sh "docker tag achat:1-0  malikhammami99/cc:achat1-0"
-               sh   "docker push malikhammami99/cc:achat1-0"
+                withDockerRegistry([credentialsId: registryCredential, url: 'https://index.docker.io/v1/']) {
+                    sh 'docker push malikhammami99/cc:achat1-0'
+                }
             }
         }
 
