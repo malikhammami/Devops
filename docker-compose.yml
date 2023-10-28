@@ -3,25 +3,23 @@ version: '3'
 services:
   mysqldb:
     image: mysql:5.7
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: 123456
       MYSQL_DATABASE: achatdb
     ports:
       - "3306:3306"
     volumes:
-      - mysql_data:/var/lib/mysql
-
+      - db:/var/lib/mysql
   springboot:
     image: amaniboussaa/springachat  # Utilisation de l'image Docker amaniboussaa/springachat
     ports:
       - "8082:8082"
     depends_on:
-      - mysql
-
+      -   mysqldb
   angular:
     image: amaniboussaa/angularachat
     ports:
       - "4200:4200"
-
 volumes:
-  mysql_data:
+  db:
