@@ -82,7 +82,15 @@ pipeline {
                 }
             }
         }
-
+ stage('Docker Compose') {
+            steps {
+                script {
+                    def dockerComposeFile = 'docker-compose.yml'
+                    // Run the Docker Compose commands
+                    sh "docker-compose -f ${dockerComposeFile} up -d"
+                }
+            }
+        }
      
     }
 }
