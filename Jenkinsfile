@@ -9,9 +9,10 @@ pipeline {
     agent any
     environment {
         DOCKERHUB_USERNAME = "malikhammami99"
-        DOCKER_REGISTRY = 'malikhammami99'
+        DOCKER_REGISTRY = 'malikhammami99/cc'
         DOCKER_IMAGE = 'achat:1-0'
         PROD_TAG = "${DOCKERHUB_USERNAME}/test:v1.0.0-prod"
+         registryCredential =  'docker-hub-credentials'
     }
     parameters {
         string(name: 'BRANCH_NAME', defaultValue: "${scm.branches[0].name}", description: 'Git branch name')
@@ -75,16 +76,18 @@ pipeline {
         stage('Docker build image') {
             steps {
                 sh "docker build -t achat:1-0 ."
-                sh "docker tag achat:1-0  malikhammami99/achat:1-0"
+                sh "docker tag achat:1-0  malikhammami99/cc:achat:1-0"
             }
         }
 
         stage('Docker push image') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh "echo $DOCKER_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin $DOCKER_REGISTRY"
-                    sh "docker push $DOCKER_REGISTRY/$DOCKER_IMAGE"
+                script{
+                      docker.withRegistry( '', registryCredential ) {
+                         dockerImage.push()
+                    }
                 }
+                
             }
         }
     }
