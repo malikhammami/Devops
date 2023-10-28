@@ -76,7 +76,7 @@ pipeline {
         stage('Docker build image') {
             steps {
                 sh "docker build -t achat:1-0 ."
-                sh "docker tag achat:1-0  malikhammami99/cc:achat:1-0"
+                sh "docker tag achat:1-0  malikhammami99/cc:achat1-0"
             }
         }
 
