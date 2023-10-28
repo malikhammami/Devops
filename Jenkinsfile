@@ -79,7 +79,7 @@ stage('MVN BUILD') {
 	  stage('Docker push image') {
             steps {
                 
-                sh "docker login -u login malikhammami99 -p"
+                sh "docker login -u login malikhammami99 -p password123"
 	        sh "docker push malikhammami99/achat:1-0"
 		    
             }
