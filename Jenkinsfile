@@ -83,12 +83,12 @@ stage('MVN BUILD') {
 	  
 	stage('Docker push image') {
     steps {
-        withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+        
             sh "echo $DOCKER_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin $DOCKER_REGISTRY"
             sh "docker push $DOCKER_REGISTRY/$DOCKER_IMAGE"
         }
     }
-}
+
 
 	  
   }
