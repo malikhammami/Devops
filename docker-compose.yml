@@ -27,7 +27,9 @@ services:
   angular:
     image: amaniboussaa/angularachat
     ports:
-      - 4200:4200
+      - 4200:80
+    depends_on:
+      - springboot
 
 volumes:
   db:
