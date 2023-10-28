@@ -73,22 +73,14 @@ pipeline {
             }
         }
 
-        stage('Docker build image') {
+        stage('Docker build and push image') {
             steps {
                 sh "docker build -t achat:1-0 ."
                 sh "docker tag achat:1-0  malikhammami99/cc:achat1-0"
+               sh   "docker push malikhammami99/cc:achat1-0"
             }
         }
 
-        stage('Docker push image') {
-            steps {
-                script{
-                      docker.withRegistry( '', registryCredential ) {
-                         dockerImage.push()
-                    }
-                }
-                
-            }
-        }
+     
     }
 }
