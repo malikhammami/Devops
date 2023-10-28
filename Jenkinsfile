@@ -7,8 +7,12 @@ def targetBranch
 pipeline {
   agent any
 	environment {
-     DOCKERHUB_USERNAME = "malikhammami99"
-     PROD_TAG = "${DOCKERHUB_USERNAME}/test:v1.0.0-prod"
+             DOCKERHUB_USERNAME = "malikhammami99"
+             DOCKER_REGISTRY = 'malikhammami99'
+             DOCKER_IMAGE = 'achat:1-0'
+             DOCKER_PASSWORD = 'password123'
+             PROD_TAG = "${DOCKERHUB_USERNAME}/test:v1.0.0-prod"
+		
     }
 	parameters {
 	string(name: 'BRANCH_NAME', defaultValue: "${scm.branches[0].name}", description: 'Git branch name')
@@ -78,12 +82,10 @@ stage('MVN BUILD') {
 	  
 	  stage('Docker push image') {
             steps {
-                
-                sh "docker login -u login malikhammami99 -p password123"
-	        sh "docker push malikhammami99/achat:1-0"
-		    
+                sh "echo $DOCKER_PASSWORD | docker login -u login $DOCKER_REGISTRY -p-"
+                sh "docker push $DOCKER_REGISTRY/$DOCKER_IMAGE"
             }
-	}  
+        }
 
 	  
   }
