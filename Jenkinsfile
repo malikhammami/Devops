@@ -65,6 +65,26 @@ stage('MVN BUILD') {
                 
                 sh "mvn deploy -DskipTests"
             }
-        }  
+        } 
+	  
+	stage('Docker build image') {
+            steps {
+                
+                sh "docker build -t achat:1-0 ."
+	        sh "docker tag achat:1-0  malikhammami99/achat:1-0"
+		    
+            }
+	} 
+	  
+	  stage('Docker push image') {
+            steps {
+                
+                sh "docker login -u login malikhammami99 -p"
+	        sh "docker push malikhammami99/achat:1-0"
+		    
+            }
+	}  
+
+	  
   }
 }
