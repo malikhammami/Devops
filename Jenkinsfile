@@ -51,6 +51,7 @@ pipeline {
         }
         stage('Build') {
             steps {
+<<<<<<< HEAD
                 sh 'docker build -t malikhammami99/springachat .'
                 echo 'Build Image Completed'
             }
@@ -76,6 +77,25 @@ pipeline {
                 echo 'Docker Compose Completed'
             }
         }
+=======
+                sh "docker build -t achat:1-0 ."
+           
+                withDockerRegistry([credentialsId: registryCredential, url: 'https://index.docker.io/v1/']) {
+                    sh 'docker push malikhammami99/cc:achat1-0'
+                }
+            }
+        }
+ stage('Docker Compose') {
+            steps {
+                script {
+                    def dockerComposeFile = 'docker-compose.yml'
+                    // Run the Docker Compose commands
+                    sh "docker-compose -f ${dockerComposeFile} up -d"
+                }
+            }
+        }
+     
+>>>>>>> 023cef73710c37a2a17687e21d6c6af313d80811
     }
 
     post {
