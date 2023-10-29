@@ -1,29 +1,47 @@
-version: '3.8'
-
+version: '3'
 services:
   mysqldb:
     image: mysql:5.7
     restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: 
+      MYSQL_DATABASE: achatdb
     ports:
-      - 3307:3306
+      - 3306:3306
     volumes:
       - db:/var/lib/mysql
+    networks:
+      - backendNetwork
+      
+  springboot:
+    image: malikhammami99/springachat
+    ports:
+      - 8089:8089
     environment:
-       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-  achat-backend:
-      image: malikhammami99/cc:achat1-0
-      restart: unless-stopped
-      ports:
-        - 8089:8089
-      depends_on:
-        - mysqldb
-  achat-frontend:
-    image: nginx:latest
-    restart: unless-stopped
+      MYSQL_HOST: mysqldb
+      MYSQL_PORT: 3306
+    depends_on:
+      - mysqldb
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://mysqldb:3306"]
+      interval: 10s
+      retries: 5
+    networks:
+      - backendNetwork
+      - frontendNetwork
+
+  angular:
+    image: malikhammami99/angularachat
     ports:
       - 4200:80
-    volumes:
-      - /c/Users/Malik/Downloads/crud-tuto-front/crud-tuto-front/dist:/usr/share/nginx/html
+    depends_on:
+      - springboot
+    networks:
+      - frontendNetwork
 
 volumes:
   db:
+
+networks:
+  backendNetwork:
+  frontendNetwork:

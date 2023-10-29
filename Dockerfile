@@ -1,17 +1,13 @@
-<<<<<<< HEAD
-FROM openjdk
+
+FROM openjdk:8-jdk-alpine
+
+
+ARG NEXUS_URL=http://localhost:8081/repository/maven-releases/tn/esprit/rh/achat/1.0/
+ARG JAR_FILE=achat-1.0.jar
+
+ADD ${NEXUS_URL}${JAR_FILE} springachat.jar
+
+
 EXPOSE 8089
-WORKDIR /app
-RUN apt-get update && apt-get install -y curl
-RUN curl -o achat-1.0.jar -L "
-ADD target/achat-1.0.jar achat-1.0.jar
-ENTRYPOINT ["java","-jar","/achat-1.0.jar"]
-=======
-FROM openjdk:11-jre-slim
-EXPOSE 8089
-WORKDIR /app
-RUN apt-get update && apt-get install -y curl
-RUN curl -o achat-1.0.jar -L "http://192.168.1.222:8081/repository/maven-releases/tn/esprit/rh/achat/1.0/achat-1.0.jar"
-ADD target/achat-1.0.jar achat-1.0.jar
-ENTRYPOINT ["java","-jar","/achat-1.0.jar"]
->>>>>>> 8712a4d2ca47d4912666acc3d65178f5f4477794
+
+ENTRYPOINT ["java","-jar","/springachat.jar"]

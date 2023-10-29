@@ -1,25 +1,13 @@
-def getGitBranchName() {
-    return scm.branches[0].name
-}
-
-def branchName
-def targetBranch 
-
 pipeline {
     agent any
-    environment {
-        DOCKERHUB_USERNAME = "malikhammami99"
-        DOCKER_REGISTRY = 'malikhammami99/cc'
-        DOCKER_IMAGE = 'achat:1-0'
-        PROD_TAG = "${DOCKERHUB_USERNAME}/test:v1.0.0-prod"
-         registryCredential =  'docker-hub-credentials'
-    }
     parameters {
         string(name: 'BRANCH_NAME', defaultValue: "${scm.branches[0].name}", description: 'Git branch name')
         string(name: 'CHANGE_ID', defaultValue: '', description: 'Git change ID for merge requests')
         string(name: 'CHANGE_TARGET', defaultValue: '', description: 'Git change ID for the target merge requests')
     }
-
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('docker-hub-credentials')
+    }
     stages {
         stage('Github') {
             steps {
@@ -35,54 +23,64 @@ pipeline {
                 echo "Current branch name: ${targetBranch}"
             }
         }
-
+        stage('MVN CLEAN') {
+            steps {
+                sh "mvn clean"
+            }
+        }
         stage('MVN COMPILE') {
-            when {
-                expression {
-                    (params.CHANGE_ID != null) && ((targetBranch == 'Fournisseur'))
-                }
-            }
             steps {
-                sh 'mvn clean compile'
-                echo 'Clean stage done'
+                sh "mvn compile"
             }
         }
-
-        stage('MVN BUILD') {
-            when {
-                expression {
-                    (params.CHANGE_ID != null) && ((targetBranch == 'Fournisseur'))
-                }
-            }
+        stage('Mockito') {
             steps {
-                sh 'mvn clean install'
-                echo 'Build stage done'
+                sh 'mvn test'
             }
         }
-
-        stage('SonarQube Analysis') {
+        stage('SonarQube') {
             steps {
-                // Lancer l'analyse SonarQube avec Maven
                 sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar"
             }
         }
 
         stage('Nexus') {
             steps {
-                sh "mvn deploy -DskipTests"
+                sh 'mvn deploy -DskipTests'
             }
         }
-
-        stage('Docker build and push image') {
+        stage('Build') {
             steps {
-                sh "docker build -t achat:1-0 ."
-                sh "docker tag achat:1-0  malikhammami99/cc:achat1-0"
-                withDockerRegistry([credentialsId: registryCredential, url: 'https://index.docker.io/v1/']) {
-                    sh 'docker push malikhammami99/cc:achat1-0'
-                }
+                sh 'docker build -t malikhammami99/springachat .'
+                echo 'Build Image Completed'
             }
         }
+        stage('Login to Docker Hub') {
+            steps {
+                script {
+                    // Login to Docker Hub using credentials
+                    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                }
+                echo 'Login Completed'
+            }
+        }
+        stage('Push Image to Docker Hub') {
+            steps {
+                sh 'docker push malikhammami99/springachat'
+                echo 'Push Image Completed'
+            }
+        }
+        stage('Docker Compose') {
+            steps {
+                sh 'docker compose up -d'
+                echo 'Docker Compose Completed'
+            }
+        }
+    }
 
-     
+    post {
+        always {
+            sh 'docker logout'
+        }
     }
 }
