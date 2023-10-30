@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   mysqldb:
-    image: mysql:8
+    image: mysql
     restart: unless-stopped
     ports:
       - 3306:3306
