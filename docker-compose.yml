@@ -3,6 +3,7 @@ version: "3.8"
 services:
   mysqldb:
     image: mysql:5.7.44
+    container_name: achatdb
     restart: unless-stopped
     ports:
       - 3307:3306
@@ -16,7 +17,7 @@ services:
     ports:
       - 8089:8089
     depends_on:
-      - mysqldb
+      - achatdb
       
 volumes:
   db:
