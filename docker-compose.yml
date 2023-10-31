@@ -10,7 +10,7 @@ services:
     volumes:
       - db:/var/lib/mysql
       - MYSQL_ALLOW_EMPTY_PASSWORD=1
-      - MYSQL_DATABASE=achatdb
+      - MYSQL_DATABASE=mysqldb
   achat-backend:
     image: hassenzayani/achat:v1.0-prod
     restart: unless-stopped
