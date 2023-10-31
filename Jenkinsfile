@@ -34,17 +34,18 @@ pipeline {
             }
         }
 
+        stage('Mockito') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        
         stage('SonarQube') {
             steps {
                 sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar"
             }
         }
 
-        stage('Mockito') {
-            steps {
-                sh 'mvn test'
-            }
-        }
         stage('Nexus') {
             steps {
                 sh 'mvn deploy -DskipTests'
