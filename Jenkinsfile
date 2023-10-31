@@ -164,7 +164,16 @@ stage('MVN COMPILE') {
 }
 
 
-
+stage('DOCKER COMPOSE') {
+    when {
+        expression {
+            (params.CHANGE_ID != null) && (targetBranch == 'Reglement')
+        }
+    }
+    steps {
+        sh "docker-compose -f docker-compose.yml up"
+    }
+	}
 	  
 
 	  
