@@ -1,6 +1,4 @@
-
-
-FROM maven:3.8.3-jdk-11 AS builder
+FROM openjdk:11-jre-slim
 WORKDIR /app
 COPY pom.xml .
 RUN --mount=type=cache,target=/root/.m2 mvn dependency:go-offline
