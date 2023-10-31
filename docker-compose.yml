@@ -11,7 +11,7 @@ services:
     environment:
        MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
   achat-backend:
-      image: ghiloufiw/ghiloufi:v1.0-prod
+      image: ghiloufiw/ghiloufi:v1.0.0-prod
       restart: unless-stopped
       ports:
         - 8082:8082
