@@ -33,17 +33,18 @@ pipeline {
                 sh "mvn compile"
             }
         }
-        stage('Mockito') {
-            steps {
-                sh 'mvn test'
-            }
-        }
+
         stage('SonarQube') {
             steps {
                 sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar"
             }
         }
 
+        stage('Mockito') {
+            steps {
+                sh 'mvn test'
+            }
+        }
         stage('Nexus') {
             steps {
                 sh 'mvn deploy -DskipTests'
@@ -74,6 +75,14 @@ pipeline {
             steps {
                 sh 'docker compose up -d'
                 echo 'Docker Compose Completed'
+            }
+        }
+        stage('GRAFANA PROMETHEUS') {
+            steps {
+                sh ...
+                docker start prometheus
+                docker start grafana
+                ...
             }
         }
     }
