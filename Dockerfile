@@ -1,11 +1,6 @@
 FROM openjdk:11-jre-slim
+EXPOSE 8089
 WORKDIR /app
-COPY pom.xml .
-RUN --mount=type=cache,target=/root/.m2 mvn dependency:go-offline
-COPY src/ src/
-RUN --mount=type=cache,target=/root/.m2 mvn package
-FROM adoptopenjdk/openjdk11:jre-11.0.6_10-alpine
-EXPOSE 8085
-COPY --from=builder /app/target/achat-1.0.jar achat-1.0.jar
-#ENTRYPOINT ["java","-jar","/achat-1.0.jar"]
-ENTRYPOINT ["java","-Djdk.tls.client.protocols=TLSv1.2","-jar","/achat-1.0.jar"]
+RUN apt-get update && apt-get install -y curl
+RUN curl -o achat-1.0.jar -L "http://192.168.162.222:8081/repository/maven-releases/tn/esprit/rh/achat/1.0/achat-1.0.jar"
+ENTRYPOINT ["java","-jar","achat-1.0.jar"]
