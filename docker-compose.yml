@@ -1,25 +1,22 @@
-version: "3.8"
+version: '3.8'
 
 services:
   mysqldb:
     image: mysql:5.7
-    container_name: mysqldb
     restart: unless-stopped
     ports:
-      - 3306:3306  # Map the host's 3306 port to the container's 3306 port
-    environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"  # Set a password for your MySQL
-      MYSQL_DATABASE: achatdb
+      - 3307:3306
     volumes:
       - db:/var/lib/mysql
-
+    environment:
+       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
   achat-backend:
-    image: hassenzayani/achat:v1.0-prod
-    restart: unless-stopped
-    ports:
-      - 8089:8089
-    depends_on:
-      - mysqldb
+      image: hassenzayani/achat:v1.0-prod
+      restart: unless-stopped
+      ports:
+        - 8082:8082
+      depends_on:
+        - mysqldb
 
 volumes:
   db:
