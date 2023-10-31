@@ -1,1 +1,22 @@
+version: '3.8'
 
+services:
+  mysqldb:
+    image: mysql:5.7
+    restart: unless-stopped
+    ports:
+      - 3307:3306
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+  achat-backend:
+      image: ghiloufiw/ghiloufi:v1.0-prod
+      restart: unless-stopped
+      ports:
+        - 8082:8082
+      depends_on:
+        - mysqldb
+
+volumes:
+  db:
