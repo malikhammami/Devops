@@ -9,8 +9,8 @@ services:
       - 3307:3306
     volumes:
       - db:/var/lib/mysql
-    environment:
-      - MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      - MYSQL_ALLOW_EMPTY_PASSWORD=1
+      - MYSQL_DATABASE=achatdb
   achat-backend:
     image: hassenzayani/achat:v1.0-prod
     restart: unless-stopped
