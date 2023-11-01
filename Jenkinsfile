@@ -26,7 +26,7 @@ pipeline {
 
           git branch: branchName,
           url: 'https://github.com/ZayaniHassen/Devops.git',
-          credentialsId: 'fbbc561b-d65d-4aee-9ae3-0aabdd4a6163'
+          credentialsId: '3c95e9d5-223d-4693-8746-a945302161dd'
       }
 	  echo "Current branch name: ${branchName}"
 	  echo "Current branch name: ${targetBranch}"
