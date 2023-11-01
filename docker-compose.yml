@@ -1,24 +1,23 @@
-version: '3.8'
+version: "3.8"
+
+networks:
+  my_network:   # Define a custom network
+    driver: bridge
 
 services:
   mysqldb:
     image: mysql:5.7
+    container_name: mysqldb
     restart: unless-stopped
     ports:
       - 3306:3306
-    volumes:
-      - db:/var/lib/mysql
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: achatdb
+    volumes:
+      - db:/var/lib/mysql
     networks:
-      backend-network:
-        aliases:
-          - db
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
+      - my_network   # Attach to the custom network
 
   achat-backend:
     image: ghiloufiw/ghiloufi:v1.0-prod
@@ -28,16 +27,8 @@ services:
     depends_on:
       - mysqldb
     networks:
-      - backend-network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8089/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-
-networks:
-  backend-network:
-    driver: bridge
+      - my_network   # Attach to the custom network
 
 volumes:
-  db:
+  db:  # Volume for mysqldb
+  frontend-data:  # Volume for achat-frontend serving static files
