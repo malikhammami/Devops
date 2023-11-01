@@ -8,8 +8,8 @@ def targetBranch
 pipeline {
   agent any
 	environment {
-     DOCKERHUB_USERNAME = "ghiloufiw"
-     PROD_TAG = "${DOCKERHUB_USERNAME}/ghiloufi:v1.0.0-prod"
+     DOCKERHUB_USERNAME = "azizkhattech"
+     PROD_TAG = "${DOCKERHUB_USERNAME}/aziz:v1.0.0-prod"
     }
 	parameters {
 	string(name: 'BRANCH_NAME', defaultValue: "${scm.branches[0].name}", description: 'Git branch name')
@@ -26,7 +26,7 @@ pipeline {
 
           git branch: branchName,
           url: 'https://github.com/ZayaniHassen/Devops.git',
-          credentialsId: 'fbbc561b-d65d-4aee-9ae3-0aabdd4a6163'
+          credentialsId: 'a4537a2d-8cd1-482b-a725-5710e377a870'
       }
 	  echo "Current branch name: ${branchName}"
 	  echo "Current branch name: ${targetBranch}"
@@ -36,7 +36,7 @@ pipeline {
 	  stage('MVN BUILD') {
       when {
         expression {
-          (params.CHANGE_ID != null) && ((targetBranch == 'Reglement'))
+          (params.CHANGE_ID != null) && ((targetBranch == 'Facture'))
         }
       }
       steps {
@@ -48,7 +48,7 @@ pipeline {
 stage('MVN COMPILE') {
       when {
         expression {
-          (params.CHANGE_ID != null) && ((targetBranch == 'Reglement'))
+          (params.CHANGE_ID != null) && ((targetBranch == 'Facture'))
         }
       }
       steps {
@@ -61,7 +61,7 @@ stage('MVN COMPILE') {
 	// stage ('JUNIT TEST') {
 	// when {
  //         expression {
- //           (params.CHANGE_ID != null) && ((targetBranch == 'Reglement'))
+ //           (params.CHANGE_ID != null) && ((targetBranch == 'Facture'))
  //            }
 	//    }
  //      steps {
@@ -73,7 +73,7 @@ stage('MVN COMPILE') {
 	stage ('STATIC TEST WITH SONAR') {
        when {
          expression {
-           (params.CHANGE_ID != null) && ((targetBranch == 'Reglement'))
+           (params.CHANGE_ID != null) && ((targetBranch == 'Facture'))
          }
        }
        steps {
@@ -86,7 +86,7 @@ stage('MVN COMPILE') {
 	   stage ('NEXUS DEPLOY') {
 	when {
          expression {
-          (params.CHANGE_ID != null) && ((targetBranch == 'Reglement'))
+          (params.CHANGE_ID != null) && ((targetBranch == 'Facture'))
 	}
 	   }
        steps {
@@ -98,12 +98,12 @@ stage('MVN COMPILE') {
 	stage('Build Docker') {
     when {
         expression {
-          (params.CHANGE_ID != null) && ((targetBranch == 'Reglement'))
+          (params.CHANGE_ID != null) && ((targetBranch == 'Facture'))
         }
     }
     steps {
         script {
-            if (targetBranch == 'Reglement') {
+            if (targetBranch == 'Facture') {
                 sh "docker build -t ${PROD_TAG} ."
             } 
         }
@@ -115,11 +115,11 @@ stage('MVN COMPILE') {
 	  stage('Docker Login'){
 	     when {
         expression {
-          (params.CHANGE_ID != null) && ((targetBranch == 'Reglement'))
+          (params.CHANGE_ID != null) && ((targetBranch == 'Facture'))
         }
     }
             steps{
-                withCredentials([usernamePassword(credentialsId: '1b9b7429-997c-40ff-af6e-fd502cb9c06d', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'cd4709e6-a15a-438c-87ac-5b94afe861d8', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
                 sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}"
     }
   }
@@ -131,11 +131,11 @@ stage('MVN COMPILE') {
 	stage('Docker Push'){
 		when {
         expression {
-          (params.CHANGE_ID != null) && ((targetBranch == 'Reglement'))
+          (params.CHANGE_ID != null) && ((targetBranch == 'Facture'))
         }
     }
             steps{
-                sh 'docker push $DOCKERHUB_USERNAME/ghiloufi --all-tags '
+                sh 'docker push $DOCKERHUB_USERNAME/aziz --all-tags '
             }
         }
 
@@ -146,7 +146,7 @@ stage('MVN COMPILE') {
 	  stage('Remove Containers') {
 		when {
         expression {
-          (params.CHANGE_ID != null) && ((targetBranch == 'Reglement'))
+          (params.CHANGE_ID != null) && ((targetBranch == 'Facture'))
         }
     }
     steps {
