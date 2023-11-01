@@ -1,7 +1,7 @@
 version: "3.8"
 
 networks:
-  my_network:   # Define a custom network
+  network1:   # Define a custom network
     driver: bridge
 
 services:
@@ -17,7 +17,7 @@ services:
     volumes:
       - db:/var/lib/mysql
     networks:
-      - my_network   # Attach to the custom network
+      - network1   # Attach to the custom network
 
   achat-backend:
     image: ghiloufiw/ghiloufi:v1.0-prod
@@ -27,7 +27,7 @@ services:
     depends_on:
       - mysqldb
     networks:
-      - my_network   # Attach to the custom network
+      - network1   # Attach to the custom network
 
 volumes:
   db:
