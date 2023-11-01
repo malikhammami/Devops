@@ -14,7 +14,7 @@ services:
       image: ghiloufiw/ghiloufi:v1.0.0-prod
       restart: unless-stopped
       ports:
-        - 8082:8082
+        - 8089:8089
       depends_on:
         - mysqldb
 
