@@ -171,7 +171,8 @@ stage('DOCKER COMPOSE') {
         }
     }
     steps {
-        sh "docker-compose -f docker-compose.yml up"
+	sh "docker-compose down -v"
+        sh "docker-compose -f docker-compose.yml up --verbose"
     }
 	}
 	  
