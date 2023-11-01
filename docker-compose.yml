@@ -14,6 +14,11 @@ services:
       backend-network:
         aliases:
           - db
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   achat-backend:
     image: ghiloufiw/ghiloufi:v1.0-prod
@@ -24,6 +29,11 @@ services:
       - mysqldb
     networks:
       - backend-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8089/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
 networks:
   backend-network:
