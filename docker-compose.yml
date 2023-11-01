@@ -12,8 +12,8 @@ services:
        MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     networks:
       - backend-network
-    networks_aliases:
-      - db
+    network_aliases:
+      - db  # Use network_aliases instead of networks_aliases
 
   achat-backend:
     image: ghiloufiw/ghiloufi:v1.0-prod
