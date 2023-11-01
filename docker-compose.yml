@@ -9,11 +9,11 @@ services:
     volumes:
       - db:/var/lib/mysql
     environment:
-       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     networks:
-      - backend-network
-    network_aliases:
-      - db  # Use network_aliases instead of networks_aliases
+      backend-network:
+        aliases:
+          - db
 
   achat-backend:
     image: ghiloufiw/ghiloufi:v1.0-prod
