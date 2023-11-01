@@ -8,8 +8,8 @@ def targetBranch
 pipeline {
   agent any
 	environment {
-     DOCKERHUB_USERNAME = "ghiloufiw"
-     PROD_TAG = "${DOCKERHUB_USERNAME}/ghiloufi:v1.0.0-prod"
+     DOCKERHUB_USERNAME = "ferielfeki"
+     PROD_TAG = "${DOCKERHUB_USERNAME}/ferielf:v1.0.0-prod"
     }
 	parameters {
 	string(name: 'BRANCH_NAME', defaultValue: "${scm.branches[0].name}", description: 'Git branch name')
@@ -36,7 +36,7 @@ pipeline {
 	  stage('MVN BUILD') {
       when {
         expression {
-          (params.CHANGE_ID != null) && ((targetBranch == 'Reglement'))
+          (params.CHANGE_ID != null) && ((targetBranch == 'Stock'))
         }
       }
       steps {
@@ -48,7 +48,7 @@ pipeline {
 stage('MVN COMPILE') {
       when {
         expression {
-          (params.CHANGE_ID != null) && ((targetBranch == 'Reglement'))
+          (params.CHANGE_ID != null) && ((targetBranch == 'Stock'))
         }
       }
       steps {
@@ -61,7 +61,7 @@ stage('MVN COMPILE') {
 	// stage ('JUNIT TEST') {
 	// when {
  //         expression {
- //           (params.CHANGE_ID != null) && ((targetBranch == 'Reglement'))
+ //           (params.CHANGE_ID != null) && ((targetBranch == 'Stock'))
  //            }
 	//    }
  //      steps {
@@ -73,7 +73,7 @@ stage('MVN COMPILE') {
 	stage ('STATIC TEST WITH SONAR') {
        when {
          expression {
-           (params.CHANGE_ID != null) && ((targetBranch == 'Reglement'))
+           (params.CHANGE_ID != null) && ((targetBranch == 'Stock'))
          }
        }
        steps {
@@ -86,7 +86,7 @@ stage('MVN COMPILE') {
 	   stage ('NEXUS DEPLOY') {
 	when {
          expression {
-          (params.CHANGE_ID != null) && ((targetBranch == 'Reglement'))
+          (params.CHANGE_ID != null) && ((targetBranch == 'Stock'))
 	}
 	   }
        steps {
@@ -98,12 +98,12 @@ stage('MVN COMPILE') {
 	stage('Build Docker') {
     when {
         expression {
-          (params.CHANGE_ID != null) && ((targetBranch == 'Reglement'))
+          (params.CHANGE_ID != null) && ((targetBranch == 'Stock'))
         }
     }
     steps {
         script {
-            if (targetBranch == 'Reglement') {
+            if (targetBranch == 'Stock') {
                 sh "docker build -t ${PROD_TAG} ."
             } 
         }
@@ -115,11 +115,11 @@ stage('MVN COMPILE') {
 	  stage('Docker Login'){
 	     when {
         expression {
-          (params.CHANGE_ID != null) && ((targetBranch == 'Reglement'))
+          (params.CHANGE_ID != null) && ((targetBranch == 'Stock'))
         }
     }
             steps{
-                withCredentials([usernamePassword(credentialsId: '1b9b7429-997c-40ff-af6e-fd502cb9c06d', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'fe060a28-49ff-49f3-a7b0-07fd1929f367', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
                 sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}"
     }
   }
@@ -131,7 +131,7 @@ stage('MVN COMPILE') {
 	stage('Docker Push'){
 		when {
         expression {
-          (params.CHANGE_ID != null) && ((targetBranch == 'Reglement'))
+          (params.CHANGE_ID != null) && ((targetBranch == 'Stock'))
         }
     }
             steps{
@@ -146,7 +146,7 @@ stage('MVN COMPILE') {
 	  stage('Remove Containers') {
 		when {
         expression {
-          (params.CHANGE_ID != null) && ((targetBranch == 'Reglement'))
+          (params.CHANGE_ID != null) && ((targetBranch == 'Stock'))
         }
     }
     steps {
@@ -167,7 +167,7 @@ stage('MVN COMPILE') {
 	  	  stage('DOCKER COMPOSE') {
     when {
         expression {
-            (params.CHANGE_ID != null) && (targetBranch == 'Reglement')
+            (params.CHANGE_ID != null) && (targetBranch == 'Stock')
         }
     }
     steps {
