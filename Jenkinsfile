@@ -9,7 +9,7 @@ pipeline {
   agent any
 	environment {
      DOCKERHUB_USERNAME = "ghiloufiw"
-     PROD_TAG = "${DOCKERHUB_USERNAME}/ghiloufi:v1.0.0-prod"
+     PROD_TAG = "${DOCKERHUB_USERNAME}/ghiloufi:v1.0-prod"
     }
 	parameters {
 	string(name: 'BRANCH_NAME', defaultValue: "${scm.branches[0].name}", description: 'Git branch name')
