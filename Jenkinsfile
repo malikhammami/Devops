@@ -182,7 +182,8 @@ stage('MVN COMPILE') {
         }
     }
     steps {
-        sh "docker-compose -f docker-compose.yml up --remove-orphans"
+	sh "docker-compose down -v"
+        sh "docker-compose -f docker-compose.yml up"
     }
 	}
 
