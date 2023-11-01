@@ -166,7 +166,7 @@ stage('MVN COMPILE') {
  stage('DOCKER COMPOSE') {
     when {
         expression {
-            (params.CHANGE_ID != null) && (targetBranch == 'Categorie_Produit')
+            (params.CHANGE_ID != null) && (targetBranch == 'Reglement')
         }
     }
     steps {
