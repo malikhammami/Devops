@@ -1,36 +1,33 @@
-version: '3'
+version: "3.8"
+
+networks:
+  my_network:   # Define a custom network
+    driver: bridge
+
 services:
   mysqldb:
     image: mysql:5.7
+    container_name: mysqldb
     restart: unless-stopped
+    ports:
+      - 3306:3306
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_DATABASE: achatdb
-    ports:
-      - 3306:3306
     volumes:
       - db:/var/lib/mysql
     networks:
-      - backendNetwork
-      
-  springboot:
-    image: ghiloufiw/ghiloufi:v1.0-prod
+      - my_network   # Attach to the custom network
+
+  achat-backend:
+    image: hassenzayani/achat:v1.0-prod
+    restart: unless-stopped
     ports:
       - 8089:8089
-    environment:
-      MYSQL_HOST: mysqldb
-      MYSQL_PORT: 3306
     depends_on:
       - mysqldb
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://mysqldb:3306"]
-      interval: 10s
-      retries: 5
     networks:
-      - backendNetwork
+      - my_network   # Attach to the custom network
 
 volumes:
   db:
-
-networks:
-  backendNetwork:
