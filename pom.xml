@@ -123,7 +123,8 @@
 				</plugins>
 			</pluginManagement>
 	</build>
-<distributionManagement>
+
+	<distributionManagement>
 		<repository>
 			<id>deploymentRepo</id>
 			<name>Nexus Repository</name>
@@ -131,4 +132,5 @@
 		</repository>
 		
 	</distributionManagement>
+
 </project>
