@@ -29,5 +29,13 @@ services:
     networks:
       - my_network   # Attach to the custom network
 
+  achat-frontend:
+    image: hassenzayani/front:angular  # Replace with the actual image name/tag for your Angular frontend
+    restart: unless-stopped
+    ports:
+      - 4201:80  # You can map port 80 of the host to the frontend container
+    networks:
+      - my_network   # Attach to the custom network
+
 volumes:
   db:
