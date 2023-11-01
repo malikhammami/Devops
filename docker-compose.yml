@@ -1,34 +1,22 @@
-version: '3'
+version: '3.8'
+
 services:
   mysqldb:
     image: mysql:5.7
     restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: 
-      MYSQL_DATABASE: achatdb
     ports:
-      - 3306:3306
+      - 3307:3306
     volumes:
       - db:/var/lib/mysql
-    networks:
-      - backendNetwork
-      
-  springboot:
-    image: hassenzayani/achat:v1.0-prod
-    ports:
-      - 8089:8089
     environment:
-      MYSQL_HOST: mysqldb
-      MYSQL_PORT: 3306
-    depends_on:
-      - mysqldb
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://mysqldb:3306"]
-      interval: 10s
-      retries: 5
-
-networks:
-  backendNetwork:
+       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+  achat-backend:
+      image: hassenzayani/achat:v1.0-prod
+      restart: unless-stopped
+      ports:
+        - 8082:8082
+      depends_on:
+        - mysqldb
 
 volumes:
   db:
