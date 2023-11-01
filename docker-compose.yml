@@ -11,6 +11,5 @@ services:
     environment:
        MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
 
-
 volumes:
   db:
