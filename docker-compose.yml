@@ -10,13 +10,24 @@ services:
       - db:/var/lib/mysql
     environment:
        MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    networks:
+      - backend-network
+    networks_aliases:
+      - db
+
   achat-backend:
-      image: ghiloufiw/ghiloufi:v1.0-prod
-      restart: unless-stopped
-      ports:
-        - 8089:8089
-      depends_on:
-        - mysqldb
+    image: ghiloufiw/ghiloufi:v1.0-prod
+    restart: unless-stopped
+    ports:
+      - 8089:8089
+    depends_on:
+      - mysqldb
+    networks:
+      - backend-network
+
+networks:
+  backend-network:
+    driver: bridge
 
 volumes:
   db:
