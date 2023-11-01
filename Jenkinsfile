@@ -135,7 +135,7 @@ stage('MVN COMPILE') {
         }
     }
             steps{
-                sh 'docker push $DOCKERHUB_USERNAME/ghiloufi --all-tags '
+                sh 'docker push $DOCKERHUB_USERNAME/ferielf --all-tags '
             }
         }
 
