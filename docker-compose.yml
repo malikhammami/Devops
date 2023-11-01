@@ -33,9 +33,12 @@ services:
     image: hassenzayani/front:angular  # Replace with the actual image name/tag for your Angular frontend
     restart: unless-stopped
     ports:
-      - 4201:80  # You can map port 80 of the host to the frontend container
+      - 4200:80  # You can map port 80 of the host to the frontend container
+    volumes:
+      - frontend-data:/usr/share/nginx/html  # Map volume to the default NGINX web server path
     networks:
       - my_network   # Attach to the custom network
 
 volumes:
-  db:
+  db:  # Volume for mysqldb
+  frontend-data:  # Volume for achat-frontend serving static files
