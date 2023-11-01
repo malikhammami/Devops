@@ -163,15 +163,16 @@ stage('MVN COMPILE') {
     }
 }
 
- stage('DOCKER COMPOSE') {
+
+	  	  stage('DOCKER COMPOSE') {
     when {
         expression {
             (params.CHANGE_ID != null) && (targetBranch == 'Reglement')
         }
     }
     steps {
-	sh "docker-compose down"
-        sh "docker-compose -f docker-compose.yml up"
+	sh "docker-compose down -v"
+        sh "docker-compose -f docker-compose.yml up -d"
     }
 	}
 
