@@ -35,7 +35,7 @@ services:
     ports:
       - 4200:80  # You can map port 80 of the host to the frontend container
     volumes:
-      - frontend-data:/usr/share/nginx/html  # Map volume to the default NGINX web server path
+      - frontend-data:E:/DevopsProject/crud-tuto-front/usr/share/nginx/html  # Map volume to the default NGINX web server path
     networks:
       - my_network   # Attach to the custom network
 
