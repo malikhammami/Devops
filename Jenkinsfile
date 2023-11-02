@@ -104,7 +104,7 @@ stage('MVN COMPILE') {
     steps {
         script {
             if (targetBranch == 'Categorie_Produit') {
-                sh "docker build --no-cache -t ${PROD_TAG} ."
+                sh "docker build -t ${PROD_TAG} ."
             } 
         }
     }
