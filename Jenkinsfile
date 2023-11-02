@@ -112,7 +112,7 @@ pipeline {
                     echo "No containers found using port 8085."
                 fi
                 '''
-                sh "docker-compose down --rmi all"
+               // sh "docker-compose down --rmi all"
             }
         }
 
