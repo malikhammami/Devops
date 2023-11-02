@@ -18,8 +18,9 @@ pipeline {
         string(name: 'CHANGE_ID', defaultValue: '', description: 'Git change ID for merge requests')
         string(name: 'CHANGE_TARGET', defaultValue: '', description: 'Git change ID for the target merge requests')
     }
- stages {
-        stage('Cleanup') {
+
+    stages {
+	     stage('Cleanup') {
             steps {
                 script {
                     // Remove all containers
@@ -33,8 +34,6 @@ pipeline {
                 }
             }
         }
-
-    stages {
         stage('Git Checkout') {
             steps {
                 script {
