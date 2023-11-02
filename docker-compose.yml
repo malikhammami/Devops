@@ -20,7 +20,7 @@ services:
       - my_network   # Attach to the custom network
 
   achat-backend:
-    image: hassenzayani/achat:v1.0-prod
+    image: ghiloufiw/ghiloufi:v1.0-prod
     restart: unless-stopped
     ports:
       - 8089:8089
