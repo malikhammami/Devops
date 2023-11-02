@@ -68,30 +68,47 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
-            when {
-                expression {
-                    (params.CHANGE_ID != null) && (BRANCH_NAME == 'Reglement')
-                }
-            }
-            steps {
-                script {
-                    sh "docker build -t ${PROD_TAG} ."
-                }
-            }
+	stage('Build Docker') {
+    when {
+        expression {
+          (params.CHANGE_ID != null) && ((targetBranch == 'Reglement'))
+        }
+    }
+    steps {
+        script {
+            if (targetBranch == 'Reglement') {
+                sh "docker build -t ${PROD_TAG} ."
+            } 
+        }
+    }
+}
+
+
+
+	  stage('Docker Login'){
+	     when {
+        expression {
+          (params.CHANGE_ID != null) && ((targetBranch == 'Reglement'))
+        }
+    }
+            steps{
+                withCredentials([usernamePassword(credentialsId: '928642c1-11a7-49cf-8d04-e89186dc78a1', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}"
+    }
+  }
+
         }
 
-        stage('Docker Login and Push') {
-            when {
-                expression {
-                    (params.CHANGE_ID != null) && (BRANCH_NAME == 'Reglement')
-                }
-            }
-            steps {
-                withCredentials([usernamePassword(credentialsId: '1b9b7429-997c-40ff-af6e-fd502cb9c06d', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
-                    sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}"
-                    sh "docker push ${PROD_TAG}"
-                }
+
+
+	stage('Docker Push'){
+		when {
+        expression {
+          (params.CHANGE_ID != null) && ((targetBranch == 'Categorie_Produit'))
+        }
+    }
+            steps{
+                sh 'docker push $DOCKERHUB_USERNAME/achat --all-tags '
             }
         }
 
