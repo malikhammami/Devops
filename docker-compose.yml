@@ -4,6 +4,12 @@ networks:
   my_network:   # Define a custom network
     driver: bridge
 
+  backendNetwork:  # Define another custom network
+    driver: bridge
+
+  frontendNetwork:  # Define yet another custom network
+    driver: bridge
+
 services:
   mysqldb:
     image: mysql:5.7
@@ -17,7 +23,7 @@ services:
     volumes:
       - db:/var/lib/mysql
     networks:
-      - my_network   # Attach to the custom network
+      - backendNetwork
 
   achat-backend:
     image: ghiloufiw/achat:v1.0-prod
@@ -27,7 +33,17 @@ services:
     depends_on:
       - mysqldb
     networks:
-      - my_network   # Attach to the custom network
+      - backendNetwork   # Attach to the custom network
+      - frontendNetwork
+  achat-frontend:
+    image: ghiloufiw/front:angular  # Replace with the actual image name/tag for your Angular frontend
+    restart: unless-stopped
+    ports:
+      - 4200:80  # You can map port 80 of the host to the frontend container
+    volumes:
+      - frontend-data:/usr/share/nginx/html  # Map volume to the default NGINX web server path
+    networks:
+      - frontendNetwork
 
 volumes:
   db:  # Volume for mysqldb
