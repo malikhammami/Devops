@@ -20,20 +20,6 @@ pipeline {
     }
 
     stages {
-	     stage('Cleanup') {
-            steps {
-                script {
-                    // Remove all containers
-                    sh 'docker rm -f $(docker ps -aq) || true'
-
-                    // Remove all images
-                    sh 'docker rmi -f $(docker images -aq) || true'
-
-                    // Remove all volumes
-                    sh 'docker volume rm $(docker volume ls -q) || true'
-                }
-            }
-        }
         stage('Git Checkout') {
             steps {
                 script {
