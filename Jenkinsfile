@@ -18,6 +18,21 @@ pipeline {
         string(name: 'CHANGE_ID', defaultValue: '', description: 'Git change ID for merge requests')
         string(name: 'CHANGE_TARGET', defaultValue: '', description: 'Git change ID for the target merge requests')
     }
+ stages {
+        stage('Cleanup') {
+            steps {
+                script {
+                    // Remove all containers
+                    sh 'docker rm -f $(docker ps -aq) || true'
+
+                    // Remove all images
+                    sh 'docker rmi -f $(docker images -aq) || true'
+
+                    // Remove all volumes
+                    sh 'docker volume rm $(docker volume ls -q) || true'
+                }
+            }
+        }
 
     stages {
         stage('Git Checkout') {
