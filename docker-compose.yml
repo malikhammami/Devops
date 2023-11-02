@@ -2,7 +2,8 @@ version: "3.8"
 
 networks:
   my_network:   # Define a custom network
-    driver: bridge
+      - backendNetwork
+      - frontendNetwork
 
 services:
   mysqldb:
@@ -17,7 +18,7 @@ services:
     volumes:
       - db:/var/lib/mysql
     networks:
-      - my_network   # Attach to the custom network
+      - backendNetwork
 
   achat-backend:
     image: hassenzayani/achat:v1.0-prod
@@ -35,9 +36,9 @@ services:
     ports:
       - 4200:80  # You can map port 80 of the host to the frontend container
     volumes:
-      - E:/DevopsProject/crud-tuto-front/usr/share/nginx/html  # Map volume to the default NGINX web server path
+      - frontend-data:/usr/share/nginx/html  # Map volume to the default NGINX web server path
     networks:
-      - my_network   # Attach to the custom network
+      - frontendNetwork
 
 volumes:
   db:  # Volume for mysqldb
