@@ -2,8 +2,13 @@ version: "3.8"
 
 networks:
   my_network:   # Define a custom network
-      - backendNetwork
-      - frontendNetwork
+    driver: bridge
+
+  backendNetwork:  # Define another custom network
+    driver: bridge
+
+  frontendNetwork:  # Define yet another custom network
+    driver: bridge
 
 services:
   mysqldb:
