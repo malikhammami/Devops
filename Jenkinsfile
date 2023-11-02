@@ -171,10 +171,10 @@ stage('MVN COMPILE') {
         }
     }
     steps {
-	
-	//
+	sh "docker-compose down --rmi all"
+	//docker-compose down 
 	sh "docker-compose up -d"
-	    sh "docker-compose down -v"
+	    
         sh "docker-compose -f docker-compose.yml up"
     }
 	}
