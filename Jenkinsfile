@@ -162,31 +162,31 @@ stage('MVN COMPILE') {
 
 
 
-	//   	  stage('DOCKER COMPOSE') {
- //    when {
- //        expression {
- //            (params.CHANGE_ID != null) && (targetBranch == 'Categorie_Produit')
- //        }
- //    }
- //    steps {
-	// sh "docker-compose down -v"
- //        sh "docker-compose -f docker-compose.yml up -d"
- //    }
-	// }
-
-
-
-
-	  stage('Deploy to Prod') {
-            when {
-                expression {
-			(params.CHANGE_ID != null)  && (targetBranch == 'Categorie_Produit')
-		}
-            }
-           steps {
-		kubernetesDeploy (configs: 'k8s.yml',kubeconfigId: 'k8sconfigpwd')
-	   }
+	  	  stage('DOCKER COMPOSE') {
+    when {
+        expression {
+            (params.CHANGE_ID != null) && (targetBranch == 'Categorie_Produit')
+        }
+    }
+    steps {
+	sh "docker-compose down -v"
+        sh "docker-compose -f docker-compose.yml up -d"
+    }
 	}
+
+
+
+
+	//   stage('Deploy to Prod') {
+ //            when {
+ //                expression {
+	// 		(params.CHANGE_ID != null)  && (targetBranch == 'Categorie_Produit')
+	// 	}
+ //            }
+ //           steps {
+	// 	kubernetesDeploy (configs: 'k8s.yml',kubeconfigId: 'k8sconfigpwd')
+	//    }
+	// }
 
 	  
 
