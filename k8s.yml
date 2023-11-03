@@ -13,6 +13,8 @@ spec:
     app: mysqldb
   type: NodePort
 
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -39,6 +41,8 @@ spec:
             - name: MYSQL_DATABASE
               value: achatdb
 
+---
+
 # achat-backend.yml
 apiVersion: v1
 kind: Service
@@ -53,6 +57,8 @@ spec:
   selector:
     app: achat-backend
   type: NodePort
+
+---
 
 apiVersion: apps/v1
 kind: Deployment
@@ -75,6 +81,8 @@ spec:
           ports:
             - containerPort: 8089
 
+---
+
 # achat-frontend.yml
 apiVersion: v1
 kind: Service
@@ -89,6 +97,8 @@ spec:
   selector:
     app: achat-frontend
   type: NodePort
+
+---
 
 apiVersion: apps/v1
 kind: Deployment
