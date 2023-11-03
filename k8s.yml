@@ -1,251 +1,112 @@
- #Generated using the tool https://8gwifi.org/kube1.jsp
-#Total Number of Services Found 3
-
-#Generating kubernetes YAML file for the Service mysqldb.yml
-#This is Service Configuration Kube definition
----
+# mysqldb.yml
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    generated.by: 8gwifi.org
-  name: service.name.0
-  namespace: default
+  name: mysqldb-service
+  namespace: your-namespace
 spec:
   ports:
-  - name: nameme_01
-    port: 3306
-    protocol: tcp
-    targetPort: 3306
+    - name: mysql-port
+      port: 3306
+      targetPort: 3306
   selector:
-    app: demo.53
+    app: mysqldb
   type: NodePort
 
-
-#This is Deployment Configuration Kube definition
----
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    app: demo.53
-  name: deployment.name.55
-  namespace: default
+  name: mysqldb-deployment
+  namespace: your-namespace
 spec:
   replicas: 1
-  revisionHistoryLimit: 1
   selector:
     matchLabels:
-      app: demo.53
+      app: mysqldb
   template:
     metadata:
       labels:
-        app: demo.53
-      namespace: default
+        app: mysqldb
     spec:
       containers:
-      - env:
-        - name: MYSQL_ALLOW_EMPTY_PASSWORD
-          value: 'yes'
-        - name: MYSQL_DATABASE
-          value: achatdb
-        image: mysql:5.7
-        imagePullPolicy: IfNotPresent
-        name: mysqldb
-        ports:
-        - containerPort: 3306
-          name: portname.0
-          protocol: tcp
-        volumeMounts:
-        - mountPath: /var/lib/mysql
-          name: pvo.0
-      terminationGracePeriodSeconds: 0
-      volumes:
-      - name: pvo.0
-        persistentVolumeClaim:
-          claimName: claimname.0
+        - name: mysql
+          image: mysql:5.7
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ALLOW_EMPTY_PASSWORD
+              value: "yes"
+            - name: MYSQL_DATABASE
+              value: achatdb
 
-#This is PersistentVolume Kube Object with Name
-#pvo.0.yml
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  annotations:
-    generated.by: 8gwifi.org
-  name: pvo.0
-  namespace: default
-spec:
-  accessModes:
-  - ReadWriteOnce
-  capacity:
-    storage: 10Gi
-  hostPath:
-    path: db
-    type: Directory
-  persistentVolumeReclaimPolicy: Retain
-
-#This is PersistentVolumeClaim Kube Object with Name
-#claimname.0.yml
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  annotations:
-    generated.by: 8gwifi.org
-  name: claimname.0
-  namespace: default
-spec:
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
-  volumeName: pvo.0
-
-#Generating kubernetes YAML file for the Service achat-backend.yml
-#This is Service Configuration Kube definition
----
+# achat-backend.yml
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    generated.by: 8gwifi.org
-  name: service.name.2
-  namespace: default
+  name: achat-backend-service
+  namespace: your-namespace
 spec:
   ports:
-  - name: nameme_01
-    port: 8089
-    protocol: tcp
-    targetPort: 8089
+    - name: backend-port
+      port: 8089
+      targetPort: 8089
   selector:
-    app: demo.58
+    app: achat-backend
   type: NodePort
 
-
-#This is Deployment Configuration Kube definition
----
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    app: demo.58
-  name: deployment.name.54
-  namespace: default
+  name: achat-backend-deployment
+  namespace: your-namespace
 spec:
   replicas: 1
-  revisionHistoryLimit: 1
   selector:
     matchLabels:
-      app: demo.58
+      app: achat-backend
   template:
     metadata:
       labels:
-        app: demo.58
-      namespace: default
+        app: achat-backend
     spec:
       containers:
-      - image: hassenzayani/achat:v1.0-prod
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 8089
-          name: portname.0
-          protocol: tcp
-      terminationGracePeriodSeconds: 0
+        - name: achat-backend
+          image: hassenzayani/achat:v1.0-prod
+          ports:
+            - containerPort: 8089
 
-#Generating kubernetes YAML file for the Service achat-frontend.yml
-#This is Service Configuration Kube definition
----
+# achat-frontend.yml
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    generated.by: 8gwifi.org
-  name: service.name.0
-  namespace: default
+  name: achat-frontend-service
+  namespace: your-namespace
 spec:
   ports:
-  - name: nameme_01
-    port: 4200
-    protocol: tcp
-    targetPort: 4200
+    - name: frontend-port
+      port: 4200
+      targetPort: 80
   selector:
-    app: demo.75
+    app: achat-frontend
   type: NodePort
 
-
-#This is Deployment Configuration Kube definition
----
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    app: demo.75
-  name: deployment.name.35
-  namespace: default
+  name: achat-frontend-deployment
+  namespace: your-namespace
 spec:
   replicas: 1
-  revisionHistoryLimit: 1
   selector:
     matchLabels:
-      app: demo.75
+      app: achat-frontend
   template:
     metadata:
       labels:
-        app: demo.75
-      namespace: default
+        app: achat-frontend
     spec:
       containers:
-      - image: hassenzayani/front:angular
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 80
-          name: portname.0
-          protocol: tcp
-        volumeMounts:
-        - mountPath: /usr/share/nginx/html
-          name: pvo.0
-      terminationGracePeriodSeconds: 0
-      volumes:
-      - name: pvo.0
-        persistentVolumeClaim:
-          claimName: claimname.0
-
-#This is PersistentVolume Kube Object with Name
-#pvo.0.yml
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  annotations:
-    generated.by: 8gwifi.org
-  name: pvo.0
-  namespace: default
-spec:
-  accessModes:
-  - ReadWriteOnce
-  capacity:
-    storage: 10Gi
-  hostPath:
-    path: frontend-data
-    type: Directory
-  persistentVolumeReclaimPolicy: Retain
-
-#This is PersistentVolumeClaim Kube Object with Name
-#claimname.0.yml
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  annotations:
-    generated.by: 8gwifi.org
-  name: claimname.0
-  namespace: default
-spec:
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
-  volumeName: pvo.0
+        - name: achat-frontend
+          image: hassenzayani/front:angular
+          ports:
+            - containerPort: 80
