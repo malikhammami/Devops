@@ -1,150 +1,124 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: achat-namespace  # Define a namespace if desired
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: db-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: frontend-data-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
+  name: achat-namespace
 
 ---
 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysqldb
+  name: spring-boot-k8s-deployment
+  labels:
+    app: spring-boot-k8s
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mysqldb
+      app: spring-boot-k8s
   template:
     metadata:
       labels:
-        app: mysqldb
+        app: spring-boot-k8s
     spec:
       containers:
-        - name: mysqldb
+        - name: spring-boot-k8s
+          image: hassenzayani/achat:v1.0-prod
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8089
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: springboot-k8ssvc
+spec:
+  selector:
+    app: spring-boot-k8s
+  ports:
+    - protocol: "TCP"
+      port: 8089
+      targetPort: 8089
+  type: NodePort
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deployment
+  labels:
+    app: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
           image: mysql:5.7
           env:
             - name: MYSQL_ALLOW_EMPTY_PASSWORD
               value: "yes"
-            - name: MYSQL_DATABASE
-              value: achatdb
           ports:
             - containerPort: 3306
-          volumeMounts:
-            - name: db-volume
-              mountPath: /var/lib/mysql
-      volumes:
-        - name: db-volume
-          persistentVolumeClaim:
-            claimName: db-pvc
-
----
-
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: achat-backend
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: achat-backend
-  template:
-    metadata:
-      labels:
-        app: achat-backend
-    spec:
-      containers:
-        - name: achat-backend
-          image: hassenzayani/achat:v1.0-prod
-          ports:
-            - containerPort: 8089
-          env:
-            - name: MYSQL_HOST
-              value: mysqldb
-      dependsOn:
-        - name: mysqldb
 
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: achat-backend-service
+  name: mysql-service
 spec:
   selector:
-    app: achat-backend
+    app: mysql
   ports:
-    - protocol: TCP
-      port: 8089
-      targetPort: 8089
-  type: ClusterIP
+    - protocol: "TCP"
+      port: 3306
+      targetPort: 3306
 
 ---
 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: achat-frontend
+  name: frontend-deployment
+  labels:
+    app: frontend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: achat-frontend
+      app: frontend
   template:
     metadata:
       labels:
-        app: achat-frontend
+        app: frontend
     spec:
       containers:
-        - name: achat-frontend
+        - name: frontend
           image: hassenzayani/front:angular
           ports:
             - containerPort: 80
-          volumeMounts:
-            - name: frontend-data-volume
-              mountPath: /usr/share/nginx/html
-      volumes:
-        - name: frontend-data-volume
-          persistentVolumeClaim:
-            claimName: frontend-data-pvc
 
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: achat-frontend-service
+  name: frontend-service
 spec:
   selector:
-    app: achat-frontend
+    app: frontend
   ports:
-    - protocol: TCP
+    - protocol: "TCP"
       port: 80
       targetPort: 80
-  type: ClusterIP
+  type: NodePort
