@@ -21,31 +21,6 @@ spec:
 
 ---
 
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: mysql-deployment
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: mysql
-  template:
-    metadata:
-      labels:
-        app: mysql
-    spec:
-      containers:
-        - name: mysql
-          image: mysql:5.7
-          ports:
-            - containerPort: 3306
-          env:
-            - name: MYSQL_ALLOW_EMPTY_PASSWORD
-              value: "yes"
-
----
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -61,13 +36,40 @@ spec:
 
 ---
 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysqldb
+  template:
+    metadata:
+      labels:
+        app: mysqldb
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:5.7
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ALLOW_EMPTY_PASSWORD
+              value: "yes"
+            - name: MYSQL_DATABASE
+              value: achatdb
+
+---
+
 apiVersion: v1
 kind: Service
 metadata:
   name: mysql-service
 spec:
   selector:
-    app: mysql
+    app: mysqldb
   ports:
     - protocol: "TCP"
       port: 3306
