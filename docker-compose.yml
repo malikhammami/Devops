@@ -11,9 +11,9 @@ services:
     volumes:
       - db:/var/lib/mysql
     networks:
-      - backendNetwork
+      - SpringNetwork
       
-  springboot:
+  SpringAchat:
     image: malikhammami99/springachat
     ports:
       - 8089:8089
@@ -27,21 +27,21 @@ services:
       interval: 10s
       retries: 5
     networks:
-      - backendNetwork
-      - frontendNetwork
+      - SpringNetwork
+      - AngularNetwork
 
-  angular:
+  AngularAchat:
     image: malikhammami99/angularachat
     ports:
       - 4200:80
     depends_on:
-      - springboot
+      - SpringAchat
     networks:
-      - frontendNetwork
+      - AngularNetwork
 
 volumes:
   db:
 
 networks:
-  backendNetwork:
-  frontendNetwork:
+  SpringNetwork:
+  AngularNetwork:
