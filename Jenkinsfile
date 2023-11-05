@@ -1,4 +1,4 @@
-def getGitBranchName() {
+def getGitBranchName() { 
                 return scm.branches[0].name
             }
 def branchName
