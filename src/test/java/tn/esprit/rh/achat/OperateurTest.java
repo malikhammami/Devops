@@ -36,8 +36,8 @@ public class OperateurTest {
     @Test
     void testGetAllOperateur() {
         List<Operateur> operatorList = Arrays.asList(
-                new Operateur(1L, "John", "Doe", "password", new HashSet<>()),
-                new Operateur(2L, "Alice", "Smith", "secure123", new HashSet<>())
+                new Operateur(1L, "Amani", "Boussaa", "password", new HashSet<>()),
+                new Operateur(2L, "Amani2", "Boussaa2", "secure123", new HashSet<>())
                 // Add more Operateur objects as needed
         );
 
@@ -51,7 +51,7 @@ public class OperateurTest {
 
     @Test
     void testDeleteOperateur() {
-        Operateur operateur = new Operateur(1L, "John", "Doe", "password", new HashSet<>());
+        Operateur operateur = new Operateur(1L, "Amani", "Boussaa", "password", new HashSet<>());
 
         operateurServiceImpl.deleteOperateur(operateur.getIdOperateur());
 
@@ -61,7 +61,7 @@ public class OperateurTest {
 
     @Test
     void testUpdateOperateur() {
-        Operateur operateur = new Operateur(1L, "John", "Doe", "password", new HashSet<>());
+        Operateur operateur = new Operateur(1L, "Amani", "Boussaa", "password", new HashSet<>());
 
         Operateur updatedOperateur = new Operateur(1L, "Updated Name", "Updated Last Name", "updatedpassword", new HashSet<>());
 
