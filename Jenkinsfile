@@ -205,7 +205,13 @@ stage('MVN COMPILE') {
     }
 	}
 
-
+        stage('Email Notification') {
+            steps {
+                script {
+                    currentBuild.resultIsBetterOrEqualTo('SUCCESS') ? notifySuccess() : notifyFailure()
+                }
+            }
+        }
 
 
 
