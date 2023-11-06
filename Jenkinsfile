@@ -197,7 +197,7 @@ stage('Remove Containers') {
         </html>
     """,
     subject: "Jenkins Job - Success",
-    to: 'hassen.zayani@esprit.tn',
+    to: 'wassim.ghiloufi@esprit.tn',
     mimeType: 'text/html'
 }
 
@@ -207,7 +207,7 @@ stage('Remove Containers') {
 def notifyFailure() {
             emailext body: "OUUUPS, The Jenkins job failed.\n You can view the build at: ${BUILD_URL}",
                 subject: "Jenkins Job - Failure",
-                to: 'hassen.zayani@esprit.tn'
+                to: 'wassim.ghiloufi@esprit.tn'
         }
 	  
   }
