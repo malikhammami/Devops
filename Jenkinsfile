@@ -4,7 +4,33 @@ def getGitBranchName() {
             }
 def branchName
 def targetBranch 
+	  def notifySuccess() {
+    def imageUrl = 'https://www.weodeo.com/wp-content/uploads/2023/02/DevOps-scaled.webp'  // Replace with the actual URL of your image
+    def imageWidth = '800px';  // Set the desired width in pixels
+    def imageHeight = 'auto';  // Set 'auto' to maintain the aspect ratio
 
+    emailext body: """
+        <html>
+            <body>
+                <p>YEEEEY, The Jenkins job was successful.</p>
+                <p>You can view the build at: <a href="${BUILD_URL}">${BUILD_URL}</a></p>
+                <p><img src="${imageUrl}" alt="Your Image" width="${imageWidth}" height="${imageHeight}"></p>
+            </body>
+        </html>
+    """,
+    subject: "Jenkins Job - Success",
+    to: 'wassim.ghiloufi@esprit.tn',
+    mimeType: 'text/html'
+}
+
+
+
+
+def notifyFailure() {
+            emailext body: "OUUUPS, The Jenkins job failed.\n You can view the build at: ${BUILD_URL}",
+                subject: "Jenkins Job - Failure",
+                to: 'wassim.ghiloufi@esprit.tn'
+        }
 pipeline {
   agent any
 	environment {
@@ -182,33 +208,7 @@ stage('Remove Containers') {
 	}
 
 
-	  def notifySuccess() {
-    def imageUrl = 'https://www.weodeo.com/wp-content/uploads/2023/02/DevOps-scaled.webp'  // Replace with the actual URL of your image
-    def imageWidth = '800px';  // Set the desired width in pixels
-    def imageHeight = 'auto';  // Set 'auto' to maintain the aspect ratio
 
-    emailext body: """
-        <html>
-            <body>
-                <p>YEEEEY, The Jenkins job was successful.</p>
-                <p>You can view the build at: <a href="${BUILD_URL}">${BUILD_URL}</a></p>
-                <p><img src="${imageUrl}" alt="Your Image" width="${imageWidth}" height="${imageHeight}"></p>
-            </body>
-        </html>
-    """,
-    subject: "Jenkins Job - Success",
-    to: 'wassim.ghiloufi@esprit.tn',
-    mimeType: 'text/html'
-}
-
-
-
-
-def notifyFailure() {
-            emailext body: "OUUUPS, The Jenkins job failed.\n You can view the build at: ${BUILD_URL}",
-                subject: "Jenkins Job - Failure",
-                to: 'wassim.ghiloufi@esprit.tn'
-        }
 	  
   }
 }
