@@ -10,6 +10,9 @@ def notifySuccess() {
     def imageWidth = '800px' // Set the desired width in pixels
     def imageHeight = 'auto' // Set 'auto' to maintain the aspect ratio
 
+    // Read the console log file and include its contents in the email body
+    def consoleLog = readFile("${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/log")
+    
     emailext(
         body: """
             <html>
@@ -17,8 +20,8 @@ def notifySuccess() {
                     <p>YEEEEY, The Jenkins job was successful.</p>
                     <p>You can view the build at: <a href="${BUILD_URL}">${BUILD_URL}</a></p>
                     <p><img src="${imageUrl}" alt="Your Image" width="${imageWidth}" height="${imageHeight}"></p>
-                    <p>Build Log:</p>
-                    <pre>${BUILD_LOG_REGEX, regex="(?s)(.*?)(Build step '.*?' marked build as.*)"}</pre>
+                    <p>Console Log:</p>
+                    <pre>${consoleLog}</pre>
                 </body>
             </html>
         """,
@@ -29,18 +32,22 @@ def notifySuccess() {
 }
 
 def notifyFailure() {
+    // Read the console log file and include its contents in the email body
+    def consoleLog = readFile("${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/log")
+
     emailext(
         body: """
             OUUUPS, The Jenkins job failed.
             You can view the build at: ${BUILD_URL}
-            Build Log:
-            <pre>${BUILD_LOG_REGEX, regex="(?s)(.*?)(Build step '.*?' marked build as.*)"}</pre>
+            Console Log:
+            <pre>${consoleLog}</pre>
         """,
         subject: "Jenkins Job - Failure",
         to: 'hassen.zayani@esprit.tn',
         mimeType: 'text/html'
     )
 }
+
 
 
 pipeline {
