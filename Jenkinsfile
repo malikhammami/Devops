@@ -9,7 +9,7 @@ pipeline {
   agent any
 	environment {
      DOCKERHUB_USERNAME = "azizkhattech"
-     PROD_TAG = "${DOCKERHUB_USERNAME}/aziz:v1.0.0-prod"
+     PROD_TAG = "${DOCKERHUB_USERNAME}/achat:v1.0-prod"
     }
 	parameters {
 	string(name: 'BRANCH_NAME', defaultValue: "${scm.branches[0].name}", description: 'Git branch name')
@@ -135,7 +135,7 @@ stage('MVN COMPILE') {
         }
     }
             steps{
-                sh 'docker push $DOCKERHUB_USERNAME/aziz --all-tags '
+                sh 'docker push $DOCKERHUB_USERNAME/achat --all-tags '
             }
         }
 
