@@ -24,7 +24,7 @@ services:
       - backendNetwork
 
   achat-backend:
-    image: azizkhattech/achat:v1.0-prod
+    image: ghiloufiw/achat:v1.0-prod
     restart: unless-stopped
     ports:
       - 8089:8089
