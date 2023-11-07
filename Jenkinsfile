@@ -207,7 +207,13 @@ stage('Remove Containers') {
     }
 	}
 
-
+        stage('Email Notification') {
+            steps {
+                script {
+                    currentBuild.resultIsBetterOrEqualTo('SUCCESS') ? notifySuccess() : notifyFailure()
+                }
+            }
+        }
 
 	  
   }
