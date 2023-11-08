@@ -1,77 +1,142 @@
 package tn.esprit.rh.achat;
 
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.MockitoAnnotations;
 import tn.esprit.rh.achat.entities.Stock;
 import tn.esprit.rh.achat.repositories.StockRepository;
 import tn.esprit.rh.achat.services.StockServiceImpl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest
-@ExtendWith(MockitoExtension.class)
 public class StockTest {
-    @Mock
-    StockRepository stockRepository;
-
     @InjectMocks
-    StockServiceImpl stockService;
+    private StockServiceImpl stockService;
 
-    @Test
-    void testRetrieveStock() {
-        Stock stock = new Stock(1L, "Test Stock", 100, 10);
-        Mockito.when(stockRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(stock));
-        Stock retrievedStock = stockService.retrieveStock(1L);
-        Assertions.assertNotNull(retrievedStock);
+    @Mock
+    private StockRepository stockRepository;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    void testAllRetrieveStock() {
-        List<Stock> stockList = new ArrayList<Stock>() {
-            {
-                add(new Stock(1L, "first", 10, 5));
-                add(new Stock(2L, "second", 200, 10));
-            }
-        };
+    public void testRetrieveAllStocks() {
+        // Arrange
+        List<Stock> stockList = Arrays.asList(
+                new Stock(1L, "Stock1", 10, 5),
+                new Stock(2L, "Stock2", 20, 8)
+        );
+        when(stockRepository.findAll()).thenReturn(stockList);
 
-        Mockito.when(stockRepository.findAll()).thenReturn(stockList);
-        List<Stock> retrievedStocks = stockService.retrieveAllStocks();
-        Assertions.assertNotNull(retrievedStocks);
+        // Act
+        List<Stock> result = stockService.retrieveAllStocks();
+
+        // Assert
+        assertEquals(2, result.size());
+        assertEquals("Stock1", result.get(0).getLibelleStock());
+        assertEquals(20, result.get(1).getQte());
     }
 
     @Test
-    void testAddStock() {
-        Stock newStock = new Stock(null, "New Stock", 50, 20);
-        Mockito.when(stockRepository.save(newStock)).thenReturn(newStock);
-        Stock addedStock = stockService.addStock(newStock);
-        Assertions.assertNotNull(addedStock);
+    public void testAddStock() {
+        // Arrange
+        Stock stockToAdd = new Stock(3L, "Stock3", 15, 7);
+        when(stockRepository.save(any(Stock.class))).thenReturn(stockToAdd);
+
+        // Act
+        Stock addedStock = stockService.addStock(stockToAdd);
+
+        // Assert
+        assertEquals("Stock3", addedStock.getLibelleStock());
+        assertEquals(15, addedStock.getQte());
     }
 
     @Test
-    void testUpdateStock() {
-        Stock existingStock = new Stock(1L, "Existing Stock", 75, 15);
-        existingStock.setQteMin(10);
+    public void testDeleteStock() {
+        // Arrange
+        Long stockIdToDelete = 1L;
 
-        Mockito.when(stockRepository.save(existingStock)).thenReturn(existingStock);
-        Stock updatedStock = stockService.updateStock(existingStock);
-        assertEquals(10, updatedStock.getQteMin());
+        // Act
+        stockService.deleteStock(stockIdToDelete);
+
+        // Assert
+        verify(stockRepository).deleteById(stockIdToDelete);
     }
 
     @Test
-    void testDeleteStock() {
-        Stock stockToDelete = new Stock(1L, "Stock to Delete", 50, 10);
-        stockService.deleteStock(stockToDelete.getIdStock());
-        Mockito.verify(stockRepository, Mockito.times(1)).deleteById(stockToDelete.getIdStock());
+    public void testUpdateStock() {
+        // Arrange
+        Stock stockToUpdate = new Stock(4L, "Stock4", 12, 6);
+        when(stockRepository.save(any(Stock.class))).thenReturn(stockToUpdate);
+
+        // Act
+        Stock updatedStock = stockService.updateStock(stockToUpdate);
+
+        // Assert
+        assertEquals("Stock4", updatedStock.getLibelleStock());
+        assertEquals(12, updatedStock.getQte());
     }
+
+    @Test
+    public void testRetrieveStock() {
+        // Arrange
+        Long stockIdToRetrieve = 2L;
+        Stock stock = new Stock(stockIdToRetrieve, "Stock2", 20, 8);
+        when(stockRepository.findById(stockIdToRetrieve)).thenReturn(java.util.Optional.of(stock));
+
+        // Act
+        Stock retrievedStock = stockService.retrieveStock(stockIdToRetrieve);
+
+        // Assert
+        assertEquals("Stock2", retrievedStock.getLibelleStock());
+        assertEquals(20, retrievedStock.getQte());
+    }
+    @Test
+    public void testRetrieveStatusStock() {
+        // Arrange
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        Date now = new Date();
+        List<Stock> stocksEnRouge = Arrays.asList(
+                new Stock(1L, "Stock1", 5, 10),  // Quantity < Min Quantity
+                new Stock(2L, "Stock2", 15, 20), // Quantity >= Min Quantity
+                new Stock(3L, "Stock3", 8, 12)   // Quantity < Min Quantity
+        );
+
+        when(stockRepository.retrieveStatusStock()).thenReturn(
+                stocksEnRouge.stream().filter(stock -> stock.getLibelleStock().equals("Stock1") || stock.getLibelleStock().equals("Stock3"))
+                        .collect(Collectors.toList())
+        );
+
+        // Act
+        String statusMessage = stockService.retrieveStatusStock();
+
+        // Assert
+        assertTrue(statusMessage.contains("le stock Stock1 a une quantité de 5 inférieur à la quantité minimale a ne pas dépasser de 10"));
+        assertFalse(statusMessage.contains("le stock Stock2 a une quantité de 15 inférieur à la quantité minimale a ne pas dépasser de 20"));
+        assertTrue(statusMessage.contains("le stock Stock3 a une quantité de 8 inférieur à la quantité minimale a ne pas dépasser de 12"));
+
+        // Ensure that Stock2 is not in the status message
+        assertFalse(statusMessage.contains("le stock Stock2"));
+
+        // You can add more specific assertions as needed
+    }
+
+
+
+
 }
