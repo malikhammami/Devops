@@ -1,4 +1,4 @@
-package tn.esprit.devops_project.services.ServiceTest;
+package tn.esprit.devops_project.services;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
