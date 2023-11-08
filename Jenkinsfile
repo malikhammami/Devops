@@ -1,9 +1,10 @@
-
 def getGitBranchName() {
-                return scm.branches[0].name
-            }
+    return scm.branches[0].name
+}
+
 def branchName
-def targetBranch 
+def targetBranch
+
 def notifySuccess() {
     def imageUrl = 'https://www.weodeo.com/wp-content/uploads/2023/02/DevOps-scaled.webp' // Replace with the actual URL of your image
     def imageWidth = '800px' // Set the desired width in pixels
