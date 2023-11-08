@@ -27,7 +27,7 @@ def notifySuccess() {
             </html>
         """,
         subject: "Jenkins Job - Success",
-        to: 'ghiloufiwassim@gmail.com',
+        to: 'wassim.ghiloufi@esprit.tn',
         attachLog: true,  // Attach the log file
         attachmentsPattern: logFile,  // Specify the file to attach
         mimeType: 'text/html'
