@@ -1,5 +1,4 @@
-package tn.esprit.rh.achat;
-
+package tn.esprit.rh.achat.entities;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Entity;
@@ -27,7 +26,7 @@ public class Stock implements Serializable {
 	private String libelleStock;
 	private Integer qte;
 	private Integer qteMin;
-//	@OneToMany(mappedBy = "stock")
+	//	@OneToMany(mappedBy = "stock")
 //	@JsonIgnore
 //	private Set<Produit> produits;
 	public Stock(String libelleStock, Integer qte, Integer qteMin) {
@@ -36,5 +35,6 @@ public class Stock implements Serializable {
 		this.qte = qte;
 		this.qteMin = qteMin;
 	}
+
 
 }
