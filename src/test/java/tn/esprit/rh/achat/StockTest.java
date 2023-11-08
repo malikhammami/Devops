@@ -8,8 +8,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import tn.esprit.rh.achat.entities.Stock;
-import tn.esprit.rh.achat.entities.StockServiceImpl;
 import tn.esprit.rh.achat.repositories.StockRepository;
+import tn.esprit.rh.achat.services.StockServiceImpl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
