@@ -1,4 +1,4 @@
-package tn.esprit.rh.achat.entities;
+package tn.esprit.rh.achat;
 
 import java.io.Serializable;
 import java.util.Set;
