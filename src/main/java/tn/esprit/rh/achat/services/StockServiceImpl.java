@@ -1,10 +1,10 @@
 package tn.esprit.rh.achat.services;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.esprit.rh.achat.entities.Stock;
 import tn.esprit.rh.achat.repositories.StockRepository;
-import tn.esprit.rh.achat.services.IStockService;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,8 +17,11 @@ public class StockServiceImpl implements IStockService {
 	@Autowired
 	StockRepository stockRepository;
 
+    public StockServiceImpl(StockRepository repository) {
+    }
 
-	@Override
+
+    @Override
 	public List<Stock> retrieveAllStocks() {
 		// récuperer la date à l'instant t1
 		log.info("In method retrieveAllStocks");
@@ -37,7 +40,7 @@ public class StockServiceImpl implements IStockService {
 		// récuperer la date à l'instant t1
 		log.info("In method addStock");
 		return stockRepository.save(s);
-
+		
 	}
 
 	@Override
@@ -59,7 +62,7 @@ public class StockServiceImpl implements IStockService {
 		log.info("In method retrieveStock");
 		Stock stock = stockRepository.findById(stockId).orElse(null);
 		log.info("out of method retrieveStock");
-		long elapsedTime = System.currentTimeMillis() - start;
+		 long elapsedTime = System.currentTimeMillis() - start;
 		log.info("Method execution time: " + elapsedTime + " milliseconds.");
 
 		return stock;
