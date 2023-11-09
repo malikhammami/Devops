@@ -86,17 +86,17 @@ stage('MVN COMPILE') {
       }
     }
 
-	// stage ('JUNIT TEST') {
-	// when {
- //         expression {
- //           (params.CHANGE_ID != null) && ((targetBranch == 'Reglement'))
- //            }
-	//    }
- //      steps {
- //        sh 'mvn test'
- //        echo 'test stage done'
- //      }
- //    }
+	 stage ('JUNIT TEST') {
+	 when {
+         expression {
+           (params.CHANGE_ID != null) && ((targetBranch == 'Reglement'))
+            }
+    }
+       steps {
+        sh 'mvn test'
+        echo 'test stage done'
+       }
+    }
 
 	stage ('STATIC TEST WITH SONAR') {
        when {
