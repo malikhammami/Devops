@@ -57,7 +57,7 @@ pipeline {
             }
         }
 
-        stage('Push Image to DockerHub') {
+        stage('Pushing Image to DockerHub') {
             steps {
                 sh 'docker push malikhammami99/springachat'
 
