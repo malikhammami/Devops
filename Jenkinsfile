@@ -97,14 +97,7 @@ pipeline {
                 sh 'docker compose up -d'
             }
         }
- 
-
-    post {
-        always {
-            sh 'docker logout'
-        }
-    }
-          stage('Email Notification') {
+  stage('Email Notification') {
             steps {
                 script {
                     currentBuild.resultIsBetterOrEqualTo('SUCCESS') ? notifySuccess() : notifyFailure()
@@ -112,4 +105,11 @@ pipeline {
             }
         }  
     }
+
+    post {
+        always {
+            sh 'docker logout'
+        }
+    }
+         
 }
